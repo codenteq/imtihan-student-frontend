@@ -4,12 +4,25 @@ import React, { ReactNode, useEffect } from 'react';
 import { AppDispatch, useDispatch, useSelector } from '@/store';
 import { deleteNote, getNotes } from '@/store/slices/note';
 import Lottie from '../../../../public/lottie/animation_llpiacni.json';
-import LottieAnimation from '@/components/LottieAnimation';
 import { INoteResponse } from '@/types/INote';
 import { setTitle } from '@/store/slices/root';
 import Link from 'next/link';
-import { Badge, Button, Card, InfoCard } from '@codenteq/interfeys';
+import {
+    Badge,
+    Button,
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from '@codenteq/interfeys';
 import Image from 'next/image';
+import { TrashIcon } from '@heroicons/react/24/outline';
+import dynamic from 'next/dynamic';
+const LottieAnimation = dynamic(() => import('@/components/LottieAnimation'), {
+    ssr: false,
+});
 
 export default function NotePage(): ReactNode {
     const dispatch: AppDispatch = useDispatch();
@@ -32,18 +45,10 @@ export default function NotePage(): ReactNode {
                 <div className="flex items-center justify-end p-4">
                     <div className="w-full md:w-auto flex md:flex-row flex-col gap-2">
                         <Link href={'/note/create'} id="create">
-                            <Button
-                                className="w-full"
-                                type={'button'}
-                                label={'Oluştur'}
-                            />
+                            <Button className="w-full">Oluştur</Button>
                         </Link>
                         <Link href={'/note/flow'}>
-                            <Button
-                                className="w-full"
-                                type={'button'}
-                                label={'Akış'}
-                            />
+                            <Button className="w-full">Akış</Button>
                         </Link>
                     </div>
                 </div>
@@ -63,84 +68,92 @@ export default function NotePage(): ReactNode {
                         </div>
                     ) : notes.length > 0 ? (
                         notes.map((note: INoteResponse, key: number) => (
-                            <Card
-                                className="note-card"
-                                key={key}
-                                actions={[
-                                    <Link
-                                        id="view"
-                                        key={key}
-                                        href={'/note/' + note?.id + '/view'}>
-                                        Görüntüle
-                                    </Link>,
+                            <Card className="note-card" key={key}>
+                                <div className="relative">
+                                    <Image
+                                        className="rounded-t-lg object-cover"
+                                        src={
+                                            'https://via.placeholder.com/640x360.png/0c6ba8?text=imtihan'
+                                        }
+                                        width={640}
+                                        height={280}
+                                        alt={note?.name}
+                                    />
+                                    <div className="absolute inset-2">
+                                        <Badge>
+                                            {note?.is_everyone == true
+                                                ? 'Herkes'
+                                                : 'Gizli'}
+                                        </Badge>
+                                    </div>
+                                </div>
+                                <CardHeader>
+                                    <CardTitle>
+                                        <Link
+                                            id="view"
+                                            key={key}
+                                            href={
+                                                '/note/' + note?.id + '/view'
+                                            }>
+                                            <Button
+                                                className="!p-0"
+                                                variant="link">
+                                                {note?.name.slice(0, 35)}
+                                            </Button>
+                                        </Link>
+                                    </CardTitle>
+                                    <CardDescription>
+                                        <p
+                                            dangerouslySetInnerHTML={{
+                                                __html: note?.content
+                                                    ? note.content.slice(0, 50)
+                                                    : '',
+                                            }}
+                                        />
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardFooter className="flex gap-2">
                                     <Link
                                         id="edit"
-                                        key={key}
+                                        className="w-full"
                                         href={'/note/' + note?.id + '/edit'}>
-                                        Düzenle
-                                    </Link>,
-                                    <button
+                                        <Button className="w-full">
+                                            Düzenle
+                                        </Button>
+                                    </Link>
+                                    <Button
                                         id="remove"
-                                        key={key}
+                                        variant="destructive"
+                                        size="icon"
+                                        className="rounded-lg"
                                         onClick={() => handleDelete(note?.id)}>
-                                        Kaldır
-                                    </button>,
-                                ]}>
-                                <div>
-                                    <Image
-                                        className="rounded-lg mt-2"
-                                        src={
-                                            'https://via.placeholder.com/1400x800?text=imtihan'
-                                        }
-                                        width={1400}
-                                        height={800}
-                                        alt={'Placeholder'}
-                                    />
-                                </div>
-                                <div className="my-2">
-                                    <Badge className="bg-indigo-100 text-indigo-800 text-xs">
-                                        {note?.is_everyone == true
-                                            ? 'Herkes'
-                                            : 'Sadece Ben'}
-                                    </Badge>
-                                </div>
-                                <div>
-                                    <h3>{note?.name.slice(0, 35)}</h3>
-                                    <p
-                                        dangerouslySetInnerHTML={{
-                                            __html: note?.content
-                                                ? note.content.slice(0, 50)
-                                                : '',
-                                        }}
-                                    />
-                                </div>
+                                        <TrashIcon className="w-5" />
+                                    </Button>
+                                </CardFooter>
                             </Card>
                         ))
                     ) : (
-                        <InfoCard className="col-span-full">
-                            <div className="flex flex-col lg:flex-row items-center lg:max-w-4xl h-auto border border-brand rounded-2xl p-5 ">
-                                <div className="order-last lg:order-first">
-                                    <h3 className="text-2xl font-bold tracking-tight">
-                                        Hadi ilk notunuzu oluşturalım.
-                                    </h3>
-                                    <p className="text-lg">
-                                        Sınırsız defter, notlarınızı alın ve
-                                        arkadaşlarınız ile paylaşın.
-                                    </p>
-                                    <div className="pt-10">
-                                        <Link href={'/note/create'}>
-                                            <Button
-                                                type={'button'}
-                                                label={'Not Oluştur'}
-                                            />
-                                        </Link>
-                                    </div>
-                                </div>
+                        <Card className="col-span-full flex flex-col lg:flex-row items-center justify-between lg:max-w-4xl">
+                            <CardHeader className="order-last lg:order-first">
+                                <CardTitle>
+                                    Hadi ilk notunuzu oluşturalım.
+                                </CardTitle>
+                                <CardDescription>
+                                    Sınırsız defter, notlarınızı alın ve
+                                    arkadaşlarınız ile paylaşın.
+                                    <Link href={'/note/create'}>
+                                        <Button className="w-full lg:max-w-xs mt-4">
+                                            Not Oluştur
+                                        </Button>
+                                    </Link>
+                                </CardDescription>
+                            </CardHeader>
+                            <CardContent>
                                 <div className="h-72">
                                     <LottieAnimation animationData={Lottie} />
                                 </div>
-                            </div>
-                        </InfoCard>
+                            </CardContent>
+                        </Card>
                     )}
                 </div>
             </main>

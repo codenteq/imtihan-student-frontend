@@ -3,21 +3,23 @@
 import { ReactNode, useEffect } from 'react';
 import {
     AreaChart,
-    Card,
+    Card as TremorCard,
     Col,
     DonutChart,
     Grid,
     Metric,
-    Tab,
-    TabGroup,
-    TabList,
-    TabPanel,
-    TabPanels,
     Text,
 } from '@tremor/react';
 import { dispatch, useSelector } from '@/store';
 import { getExamResult } from '@/store/slices/exam-result';
 import { useParams } from 'next/navigation';
+import {
+    TabGroup,
+    TabList,
+    TabsTrigger,
+    TabPanels,
+    TabPanel,
+} from '@codenteq/interfeys';
 
 export default function NoteViewPage(): ReactNode {
     const { id } = useParams();
@@ -69,32 +71,32 @@ export default function NoteViewPage(): ReactNode {
             <main>
                 <Grid numItems={1} numItemsSm={2} className="mb-5 gap-4">
                     <Grid numItems={2} className="gap-4">
-                        <Card decoration="top" decorationColor="sky">
+                        <TremorCard decoration="top" decorationColor="sky">
                             <Text>Soru</Text>
                             <Metric>{examResult?.total_questions}</Metric>
-                        </Card>
-                        <Card decoration="top" decorationColor="sky">
+                        </TremorCard>
+                        <TremorCard decoration="top" decorationColor="sky">
                             <Text>Puan</Text>
                             <Metric>
                                 {examResult?.point} / {examResult?.max_score}
                             </Metric>
-                        </Card>
-                        <Card decoration="top" decorationColor="sky">
+                        </TremorCard>
+                        <TremorCard decoration="top" decorationColor="sky">
                             <Text>Sonuç</Text>
                             <Metric>Başarılı</Metric>
-                        </Card>
-                        <Card decoration="top" decorationColor="sky">
+                        </TremorCard>
+                        <TremorCard decoration="top" decorationColor="sky">
                             <Text>Alan</Text>
                             <Metric>%67 Sayısal</Metric>
-                        </Card>
+                        </TremorCard>
                     </Grid>
 
-                    <Card>
+                    <TremorCard>
                         <TabGroup>
                             <TabList>
-                                <Tab>Sınavlar</Tab>
+                                <TabsTrigger>Sınavlar</TabsTrigger>
                             </TabList>
-                            <TabPanels className="pt-2.5">
+                            <TabPanels>
                                 <TabPanel>
                                     <Grid
                                         numItems={1}
@@ -145,10 +147,10 @@ export default function NoteViewPage(): ReactNode {
                                 </TabPanel>
                             </TabPanels>
                         </TabGroup>
-                    </Card>
+                    </TremorCard>
                 </Grid>
 
-                <Card>
+                <TremorCard>
                     <AreaChart
                         data={chartdata}
                         index="date"
@@ -156,7 +158,7 @@ export default function NoteViewPage(): ReactNode {
                         colors={['indigo', 'cyan']}
                         valueFormatter={dataFormatter}
                     />
-                </Card>
+                </TremorCard>
             </main>
         </>
     );

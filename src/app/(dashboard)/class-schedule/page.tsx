@@ -7,14 +7,25 @@ import {
     getClassSchedules,
 } from '@/store/slices/class-schedule';
 import Lottie from '../../../../public/lottie/animation_llpjqp34.json';
-import LottieAnimation from '@/components/LottieAnimation';
 import { IClassScheduleResponse } from '@/types/IClassSchedule';
 import { setTitle } from '@/store/slices/root';
-import { Button, Card, InfoCard } from '@codenteq/interfeys';
-import { CalendarDaysIcon } from '@heroicons/react/24/outline';
+import {
+    Button,
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from '@codenteq/interfeys';
+import { TrashIcon } from '@heroicons/react/24/outline';
 import CreateModal from '@/app/(dashboard)/class-schedule/_forms/CreateModal';
 import EditModal from '@/app/(dashboard)/class-schedule/_forms/EditModal';
 import ViewModal from '@/app/(dashboard)/class-schedule/_forms/ViewModal';
+import dynamic from 'next/dynamic';
+const LottieAnimation = dynamic(() => import('@/components/LottieAnimation'), {
+    ssr: false,
+});
 
 export default function ClassSchedulePage(): ReactNode {
     const dispatch: AppDispatch = useDispatch();
@@ -26,13 +37,11 @@ export default function ClassSchedulePage(): ReactNode {
         state => state.classSchedule,
     );
 
-    console.log(classSchedules);
-
     useEffect(() => {
         dispatch(setTitle('Ders Programı'));
         dispatch(getClassSchedules());
     }, [dispatch]);
-    1;
+
     const handleDelete = (id: number) => {
         if (confirm('Emin misiniz?')) {
             dispatch(deleteClassSchedule(id));
@@ -54,12 +63,9 @@ export default function ClassSchedulePage(): ReactNode {
             <main>
                 <div className="flex items-center justify-end p-4">
                     <div className="w-full md:w-auto flex md:flex-row flex-col gap-2">
-                        <Button
-                            className="w-full"
-                            type={'button'}
-                            label={'Oluştur'}
-                            onClick={() => setOpenCreateModal(true)}
-                        />
+                        <Button onClick={() => setOpenCreateModal(true)}>
+                            Oluştur
+                        </Button>
                     </div>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-1">
@@ -81,123 +87,112 @@ export default function ClassSchedulePage(): ReactNode {
                                 classSchedule: IClassScheduleResponse,
                                 key: number,
                             ) => (
-                                <Card
-                                    className="classSchedule-card"
-                                    key={key}
-                                    actions={[
-                                        <button
-                                            id="view"
-                                            key={key}
-                                            onClick={() =>
-                                                handleView(classSchedule?.id)
-                                            }>
-                                            Görüntüle
-                                        </button>,
-                                        <button
+                                <Card className="classSchedule-card" key={key}>
+                                    <CardHeader>
+                                        <CardTitle>
+                                            <Button
+                                                id="view"
+                                                variant="link"
+                                                className="!p-0"
+                                                onClick={() =>
+                                                    handleView(
+                                                        classSchedule?.id,
+                                                    )
+                                                }>
+                                                {classSchedule?.name.slice(
+                                                    0,
+                                                    35,
+                                                )}
+                                            </Button>
+                                        </CardTitle>
+                                        <CardDescription>
+                                            <p className="text-zinc-600">
+                                                {classSchedule?.description
+                                                    ? classSchedule.description.slice(
+                                                          0,
+                                                          50,
+                                                      )
+                                                    : ''}
+                                            </p>
+                                        </CardDescription>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <p className="text-zinc-500">
+                                            Başlangıç Tarihi:{' '}
+                                            {classSchedule?.start_date
+                                                ? new Date(
+                                                      classSchedule.start_date,
+                                                  ).toLocaleString('tr-TR', {
+                                                      year: 'numeric',
+                                                      month: 'long',
+                                                      day: 'numeric',
+                                                      hour: '2-digit',
+                                                      minute: '2-digit',
+                                                  })
+                                                : ''}
+                                        </p>
+                                        <p className="text-zinc-500">
+                                            Bitiş Tarihi:{' '}
+                                            {classSchedule?.end_date
+                                                ? new Date(
+                                                      classSchedule.end_date,
+                                                  ).toLocaleString('tr-TR', {
+                                                      year: 'numeric',
+                                                      month: 'long',
+                                                      day: 'numeric',
+                                                      hour: '2-digit',
+                                                      minute: '2-digit',
+                                                  })
+                                                : ''}
+                                        </p>
+                                    </CardContent>
+                                    <CardFooter className="flex gap-2">
+                                        <Button
                                             id="edit"
-                                            key={key}
                                             onClick={() =>
                                                 handleEdit(classSchedule?.id)
-                                            }>
+                                            }
+                                            className="w-full">
                                             Düzenle
-                                        </button>,
-                                        <button
+                                        </Button>
+                                        <Button
                                             id="remove"
-                                            key={key}
+                                            variant="destructive"
+                                            size="icon"
+                                            className="rounded-lg"
                                             onClick={() =>
                                                 handleDelete(classSchedule?.id)
                                             }>
-                                            Kaldır
-                                        </button>,
-                                    ]}>
-                                    <div className="p-4">
-                                        <div className="flex items-center">
-                                            <div className="w-16 h-16 mr-4 bg-zinc-100 dark:bg-zinc-900 rounded-lg flex items-center justify-center">
-                                                <CalendarDaysIcon className="w-8 h-8" />
-                                            </div>
-                                            <div>
-                                                <h3 className="text-xl font-semibold">
-                                                    {classSchedule?.name.slice(
-                                                        0,
-                                                        35,
-                                                    )}
-                                                </h3>
-                                                <p className="text-zinc-600">
-                                                    {classSchedule?.description
-                                                        ? classSchedule.description.slice(
-                                                              0,
-                                                              50,
-                                                          )
-                                                        : ''}
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="mt-4">
-                                            <p className="text-zinc-500">
-                                                Başlangıç Tarihi:{' '}
-                                                {classSchedule?.start_date
-                                                    ? new Date(
-                                                          classSchedule.start_date,
-                                                      ).toLocaleString(
-                                                          'tr-TR',
-                                                          {
-                                                              year: 'numeric',
-                                                              month: 'long',
-                                                              day: 'numeric',
-                                                              hour: '2-digit',
-                                                              minute: '2-digit',
-                                                          },
-                                                      )
-                                                    : ''}
-                                            </p>
-                                            <p className="text-zinc-500">
-                                                Bitiş Tarihi:{' '}
-                                                {classSchedule?.end_date
-                                                    ? new Date(
-                                                          classSchedule.end_date,
-                                                      ).toLocaleString(
-                                                          'tr-TR',
-                                                          {
-                                                              year: 'numeric',
-                                                              month: 'long',
-                                                              day: 'numeric',
-                                                              hour: '2-digit',
-                                                              minute: '2-digit',
-                                                          },
-                                                      )
-                                                    : ''}
-                                            </p>
-                                        </div>
-                                    </div>
+                                            <TrashIcon className="w-5" />
+                                        </Button>
+                                    </CardFooter>
                                 </Card>
                             ),
                         )
                     ) : (
-                        <InfoCard className="col-span-full">
-                            <div className="flex flex-col lg:flex-row items-center lg:max-w-4xl h-auto border border-brand rounded-2xl p-5 ">
-                                <div className="order-last lg:order-first">
-                                    <h3 className="text-2xl font-bold tracking-tight">
-                                        Hadi ders programınızı oluşturalım.
-                                    </h3>
-                                    <p className="text-lg">
-                                        Ders prgoramınızı oluşturarak tarihi,
-                                        zamanı ve dersi belirleyin.
-                                    </p>
-                                    <div className="pt-10">
-                                        <Button
-                                            type={'button'}
-                                            label={'Program Oluştur'}
-                                            onClick={() =>
-                                                setOpenCreateModal(true)
-                                            }
-                                        />
-                                    </div>
-                                </div>
+                        <Card className="col-span-full flex flex-col lg:flex-row items-center justify-between lg:max-w-4xl">
+                            <CardHeader className="order-last lg:order-first">
+                                <CardTitle>
+                                    Hadi ders programınızı oluşturalım.
+                                </CardTitle>
+                                <CardDescription>
+                                    Ders prgoramınızı oluşturarak tarihi, zamanı
+                                    ve dersi belirleyin.
+                                    <Button
+                                        className="w-full lg:max-w-xs mt-4"
+                                        onClick={() =>
+                                            setOpenCreateModal(true)
+                                        }>
+                                        Program Oluştur
+                                    </Button>
+                                </CardDescription>
+                            </CardHeader>
+                            <CardContent>
                                 <div className="h-72">
                                     <LottieAnimation animationData={Lottie} />
                                 </div>
-                            </div>
-                        </InfoCard>
+                            </CardContent>
+                        </Card>
                     )}
                 </div>
                 <CreateModal

@@ -8,10 +8,10 @@ import { postNote } from '@/store/slices/note';
 import toast from 'react-hot-toast';
 import TextEditor from '@/components/TextEditor';
 import { INoteForm } from '@/types/INote';
-import { ReactNode, useEffect } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { setTitle } from '@/store/slices/root';
-import { Button, Input, Switch } from '@codenteq/interfeys';
+import { Button, Input, Label, Switch } from '@codenteq/interfeys';
 
 const NoteCreateSchema: Yup.ObjectSchema<INoteForm> = Yup.object().shape({
     name: Yup.string().required('Required'),
@@ -54,48 +54,52 @@ export default function NoteCreatePage(): ReactNode {
                 <div className="grid lg:grid-cols-2">
                     <div className="p-3">
                         <form onSubmit={handleSubmit(onSubmit)}>
-                            <div className="flex items-center justify-between my-4">
-                                <div className="mt-3">
-                                    <Switch
-                                        id="is_everyone"
-                                        label="Herkesin görmesine izin ver"
-                                        {...register('is_everyone')}
-                                        defaultValue={1}
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="grid gap-4 mb-6">
-                                <div>
+                            <div className="grid grid-cols-1 gap-4">
+                                <div className="grid w-full items-center gap-1.5">
+                                    <Label htmlFor="name">Adı</Label>
                                     <Input
                                         {...register('name')}
                                         type="text"
                                         id="name"
-                                        label="Adı"
-                                        className="block mt-1 w-full"
-                                        messages={errors.name?.message}
                                     />
+                                    <p className="text-sm text-[#f43f5e]">
+                                        {errors.name?.message}
+                                    </p>
                                 </div>
-                                <div>
+
+                                <div className="grid w-full items-center gap-1.5">
+                                    <Label htmlFor="content">İçerik</Label>
                                     <TextEditor
-                                        label="İçerik"
                                         value={getValues('content') || ''}
                                         onChange={content => {
                                             setValue('content', content, {
                                                 shouldValidate: true,
                                             });
                                         }}
-                                        className="block mt-1 w-full"
-                                        messages={errors.content?.message}
                                     />
+                                    <p className="text-sm text-[#f43f5e]">
+                                        {errors.content?.message}
+                                    </p>
                                 </div>
                             </div>
-                            <div className="flex justify-end w-full">
+
+                            <div className="flex items-center justify-between mt-4">
+                                <div className="flex items-center space-x-2">
+                                    <Switch
+                                        id="is_everyone"
+                                        {...register('is_everyone')}
+                                        defaultValue={1}
+                                    />
+                                    <Label htmlFor="is_everyone">
+                                        Herkesin görmesine izin ver
+                                    </Label>
+                                </div>
                                 <Button
                                     isLoading={isLoading}
-                                    type={'submit'}
-                                    label={'Kaydet'}
-                                />
+                                    loader="Lütfen bekleyin"
+                                    type="submit">
+                                    Kaydet
+                                </Button>
                             </div>
                         </form>
                     </div>

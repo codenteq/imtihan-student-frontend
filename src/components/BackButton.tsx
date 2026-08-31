@@ -13,10 +13,10 @@ export default function BackButton() {
 
     return (
         <>
-            <button onClick={handleGoBack}>
-                <div className="fixed flex flex-1 justify-center items-center top-2 left-4 backdrop-blur-sm bg-white/50 rounded-full w-9 h-9 dark:bg-black/20 z-20">
-                    <ArrowLeftIcon className="w-6 h-6 z-10 dark:text-white" />
-                </div>
+            <button
+                onClick={handleGoBack}
+                className="fixed flex justify-center items-center top-2 left-4 backdrop-blur-sm bg-white/50 rounded-full w-9 h-9 dark:bg-black/20 z-20">
+                <ArrowLeftIcon className="w-6 h-6 z-10 dark:text-white" />
             </button>
         </>
     );

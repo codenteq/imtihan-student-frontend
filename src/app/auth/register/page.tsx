@@ -62,80 +62,88 @@ const Register = () => {
                         Devam etmek için İmtihan'a kaydolun.
                     </p>
 
-                    <GoogleAuthButton label="Google ile kaydolun"/>
+                    <GoogleAuthButton label="Google ile kaydolun" />
                 </div>
 
                 <div className="inline-flex justify-center items-center w-full">
                     <hr className="my-8 h-px bg-zinc-200 border-0 dark:bg-zinc-700 w-full" />
-                    <span className="absolute left-1/2 px-3 font-medium text-zinc-900 -translate-x-1/2 bg-white dark:text-white dark:bg-black">
+                    <span
+                        className="absolute left-1/2 px-3 font-medium text-zinc-900 -translate-x-1/2 bg-white dark:text-white dark:bg-black">
                         veya
                     </span>
                 </div>
 
                 <form onSubmit={submitForm}>
-                    {/* Name */}
-                    <div>
-                        <Input
-                            id="full_name"
-                            type="text"
-                            value={fullName}
-                            className="block mt-1 w-full"
-                            placeholder="Tam adınız"
-                            onChange={event => setFullName(event.target.value)}
-                            required
-                            autoFocus
-                            messages={errorMessages?.name}
-                        />
+                    <div className="grid grid-cols-1 gap-4">
+                        {/* Name */}
+                        <div>
+                            <Input
+                                id="full_name"
+                                type="text"
+                                value={fullName}
+                                placeholder="Tam adınız"
+                                onChange={event => setFullName(event.target.value)}
+                                required
+                                autoFocus
+                            />
+                            <p className="text-sm text-[#f43f5e]">
+                                {errorMessages?.name}
+                            </p>
+                        </div>
+
+                        {/* Email Address */}
+                        <div>
+                            <Input
+                                id="email"
+                                type="email"
+                                value={email}
+                                placeholder="Eposta"
+                                onChange={event => setEmail(event.target.value)}
+                                required
+                            />
+                            <p className="text-sm text-[#f43f5e]">
+                                {errorMessages?.email}
+                            </p>
+                        </div>
+
+                        {/* Password */}
+                        <div>
+                            <Input
+                                id="password"
+                                type={isRevealPassword ? 'text' : 'password'}
+                                value={password}
+                                className="pr-10"
+                                placeholder="Şifre"
+                                onChange={event => setPassword(event.target.value)}
+                                required
+                                autoComplete="new-password"
+                                minLength={8}
+                            />
+                            <p className="text-sm text-[#f43f5e]">
+                                {errorMessages?.password}
+                            </p>
+                        </div>
+
+                        {/* Confirm Password */}
+                        <div>
+                            <Input
+                                id="passwordConfirmation"
+                                type={isRevealPassword ? 'text' : 'password'}
+                                value={passwordConfirmation}
+                                placeholder="Şifreyi doğrulayın"
+                                onChange={event =>
+                                    setPasswordConfirmation(event.target.value)
+                                }
+                                required
+                                minLength={8}
+                            />
+                            <p className="text-sm text-[#f43f5e]">
+                                {errorMessages?.password_confirmation}
+                            </p>
+                        </div>
                     </div>
 
-                    {/* Email Address */}
-                    <div className="mt-4">
-                        <Input
-                            id="email"
-                            type="email"
-                            value={email}
-                            className="block mt-1 w-full"
-                            placeholder="Eposta"
-                            onChange={event => setEmail(event.target.value)}
-                            required
-                            messages={errorMessages?.email}
-                        />
-                    </div>
-
-                    {/* Password */}
-                    <div className="mt-4">
-                        <Input
-                            id="password"
-                            type={isRevealPassword ? 'text' : 'password'}
-                            value={password}
-                            className="block mt-1 w-full pr-10"
-                            placeholder="Şifre"
-                            onChange={event => setPassword(event.target.value)}
-                            required
-                            autoComplete="new-password"
-                            minLength={8}
-                            messages={errorMessages?.password}
-                        />
-                    </div>
-
-                    {/* Confirm Password */}
-                    <div className="mt-4">
-                        <Input
-                            id="passwordConfirmation"
-                            type={isRevealPassword ? 'text' : 'password'}
-                            value={passwordConfirmation}
-                            className="block mt-1 w-full"
-                            placeholder="Şifreyi doğrulayın"
-                            onChange={event =>
-                                setPasswordConfirmation(event.target.value)
-                            }
-                            required
-                            minLength={8}
-                            messages={errorMessages?.password_confirmation}
-                        />
-                    </div>
-
-                    <div className="flex items-center justify-between mt-4">
+                    <div className="flex items-center justify-between space-x-4 mt-4">
                         <Label className="text-xs">
                             Kaydol'a tıklayarak İmtihan'ın{' '}
                             <Link
@@ -156,10 +164,10 @@ const Register = () => {
 
                         <Button
                             isLoading={isLoading}
-                            className="ml-4"
-                            type={'submit'}
-                            label={'Kaydol'}
-                        />
+                            loader="Lütfen bekleyin"
+                            type="submit">
+                            Kaydol
+                        </Button>
                     </div>
                 </form>
 
@@ -172,30 +180,33 @@ const Register = () => {
                         </p>
 
                         <Link href="/auth/login">
-                            <div className="dark:text-white text-zinc-900 border hover:border-brand font-medium rounded-full text-lg text-center py-2.5">
+                            <div
+                                className="dark:text-white text-zinc-900 border hover:border-brand font-medium rounded-full text-lg text-center py-2.5">
                                 İmtihan için giriş yap.
                             </div>
                         </Link>
                     </div>
                 </div>
 
-                <Label className="text-center text-xs my-4">
-                    Bu site CAPTCHA tarafından korunmaktadır ve CloudFlare{' '}
-                    <Link
-                        href="https://www.cloudflare.com/privacypolicy/"
-                        className="underline"
-                        target="_blank">
-                        Gizlilik Politikası
-                    </Link>{' '}
-                    ile{' '}
-                    <Link
-                        href="https://www.cloudflare.com/website-terms/"
-                        className="underline"
-                        target="_blank">
-                        Hizmet Koşulları
-                    </Link>{' '}
-                    geçerlidir.
-                </Label>
+                <div className="text-center my-4">
+                    <Label className="text-xs">
+                        Bu site CAPTCHA tarafından korunmaktadır ve CloudFlare{' '}
+                        <Link
+                            href="https://www.cloudflare.com/privacypolicy/"
+                            className="underline"
+                            target="_blank">
+                            Gizlilik Politikası
+                        </Link>{' '}
+                        ile{' '}
+                        <Link
+                            href="https://www.cloudflare.com/website-terms/"
+                            className="underline"
+                            target="_blank">
+                            Hizmet Koşulları
+                        </Link>{' '}
+                        geçerlidir.
+                    </Label>
+                </div>
             </AuthCard>
         </GuestLayout>
     );

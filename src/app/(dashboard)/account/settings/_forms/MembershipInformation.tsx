@@ -15,7 +15,18 @@ import { getCountries } from '@/store/slices/country';
 import { ICountryResponse } from '@/types/ICountry';
 import { ICityResponse } from '@/types/ICity';
 import { IStateResponse } from '@/types/IState';
-import { Button, InfoCard, Input, Label, Select } from '@codenteq/interfeys';
+import {
+    Button,
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+    Input,
+    Label,
+    Select,
+} from '@codenteq/interfeys';
 import Link from 'next/link';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
 import EducationLevel from '@/enums/education-level';
@@ -104,168 +115,181 @@ export default function MembershipInformation() {
 
     return (
         <>
-            <div className="mt-16">
-                <div className="mb-6">
-                    <h3>Profil bilgileri</h3>
-                    <Label>
-                        İmtihan’daki deneyiminizi en iyi seviyede tutabilmemiz
-                        için gereken bilgilerinizi buradan düzenleyebilirsiniz.
-                    </Label>
-                </div>
+            <div className="space-y-10">
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <div className="grid gap-4 mb-6 lg:grid-cols-2">
-                        <div>
-                            <Input
-                                {...register('full_name')}
-                                type="text"
-                                id="full_name"
-                                label="Tam adınız"
-                                className="block mt-1 w-full"
-                                messages={errors.full_name?.message}
-                            />
-                        </div>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Profil bilgileri</CardTitle>
+                            <CardDescription>
+                                {
+                                    'İmtihan’daki deneyiminizi en iyi seviyede tutabilmemiz için gereken bilgilerinizi buradan düzenleyebilirsiniz.'
+                                }
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                            <div className="grid w-full items-center gap-1.5">
+                                <Label htmlFor="full_name">Tam adınız</Label>
+                                <Input
+                                    {...register('full_name')}
+                                    type="text"
+                                    id="full_name"
+                                />
+                                <p className="text-sm text-[#f43f5e]">
+                                    {errors.full_name?.message}
+                                </p>
+                            </div>
 
-                        <div className="w-full">
-                            <Select
-                                {...register('gender')}
-                                id="gender"
-                                label="Cinsiyet"
-                                className="block mt-1 w-full"
-                                placeholder="Choose"
-                                messages={errors.gender?.message}>
-                                <option value={Gender.MALE}>Erkek</option>
-                                <option value={Gender.FEMALE}>Kadın</option>
-                            </Select>
-                        </div>
+                            <div className="grid w-full items-center gap-1.5">
+                                <Label htmlFor="gender">Cinsiyet</Label>
+                                <Select {...register('gender')} id="gender">
+                                    <option value={Gender.MALE}>Erkek</option>
+                                    <option value={Gender.FEMALE}>Kadın</option>
+                                </Select>
+                                <p className="text-sm text-[#f43f5e]">
+                                    {errors.gender?.message}
+                                </p>
+                            </div>
 
-                        <div className="w-full">
-                            <Input
-                                {...register('address')}
-                                type="text"
-                                id="address"
-                                label="Adres"
-                                className="block mt-1 w-full"
-                                messages={errors.address?.message}
-                            />
-                        </div>
+                            <div className="grid w-full items-center gap-1.5">
+                                <Label htmlFor="address">Adres</Label>
+                                <Input
+                                    {...register('address')}
+                                    type="text"
+                                    id="address"
+                                />
+                                <p className="text-sm text-[#f43f5e]">
+                                    {errors.address?.message}
+                                </p>
+                            </div>
 
-                        <div className="w-full">
-                            <Select
-                                {...register('country_id')}
-                                id="country_id"
-                                label="Ülke"
-                                onChange={handleCountryChange}
-                                className="block mt-1 w-full"
-                                placeholder="Choose"
-                                messages={errors.country_id?.message}>
-                                {countries.map((country: ICountryResponse) => (
-                                    <option key={country.id} value={country.id}>
-                                        {country.name}
+                            <div className="grid w-full items-center gap-1.5">
+                                <Label htmlFor="country_id">Ülke</Label>
+                                <Select
+                                    {...register('country_id')}
+                                    id="country_id"
+                                    onChange={handleCountryChange}>
+                                    {countries.map(
+                                        (country: ICountryResponse) => (
+                                            <option
+                                                key={country.id}
+                                                value={country.id}>
+                                                {country.name}
+                                            </option>
+                                        ),
+                                    )}
+                                </Select>
+                                <p className="text-sm text-[#f43f5e]">
+                                    {errors.country_id?.message}
+                                </p>
+                            </div>
+
+                            <div className="grid w-full items-center gap-1.5">
+                                <Label htmlFor="city_id">Şehir</Label>
+                                <Select
+                                    {...register('city_id')}
+                                    id="city_id"
+                                    onChange={handleCityChange}>
+                                    {cities.map((city: ICityResponse) => (
+                                        <option key={city.id} value={city.id}>
+                                            {city.name}
+                                        </option>
+                                    ))}
+                                </Select>
+                                <p className="text-sm text-[#f43f5e]">
+                                    {errors.city_id?.message}
+                                </p>
+                            </div>
+
+                            <div className="grid w-full items-center gap-1.5">
+                                <Label htmlFor="state_id">İlçe</Label>
+                                <Select {...register('state_id')} id="state_id">
+                                    {states.map((state: IStateResponse) => (
+                                        <option key={state.id} value={state.id}>
+                                            {state.name}
+                                        </option>
+                                    ))}
+                                </Select>
+                                <p className="text-sm text-[#f43f5e]">
+                                    {errors.state_id?.message}
+                                </p>
+                            </div>
+
+                            <div className="grid w-full items-center gap-1.5">
+                                <Label htmlFor="education_level">
+                                    Eğitim Seviyesi
+                                </Label>
+                                <Select
+                                    {...register('education_level')}
+                                    id="education_level">
+                                    <option value={EducationLevel.PRIMARY}>
+                                        İlkokul
                                     </option>
-                                ))}
-                            </Select>
-                        </div>
-
-                        <div className="w-full">
-                            <Select
-                                {...register('city_id')}
-                                id="city_id"
-                                label="Şehir"
-                                onChange={handleCityChange}
-                                className="block mt-1 w-full"
-                                placeholder="Choose"
-                                messages={errors.city_id?.message}>
-                                {cities.map((city: ICityResponse) => (
-                                    <option key={city.id} value={city.id}>
-                                        {city.name}
+                                    <option value={EducationLevel.MIDDLE}>
+                                        Ortaokul
                                     </option>
-                                ))}
-                            </Select>
-                        </div>
-
-                        <div className="w-full">
-                            <Select
-                                {...register('state_id')}
-                                id="state_id"
-                                label="İlçe"
-                                className="block mt-1 w-full"
-                                placeholder="Choose"
-                                messages={errors.state_id?.message}>
-                                {states.map((state: IStateResponse) => (
-                                    <option key={state.id} value={state.id}>
-                                        {state.name}
+                                    <option value={EducationLevel.HIGH}>
+                                        Lise
                                     </option>
-                                ))}
-                            </Select>
-                        </div>
+                                    <option value={EducationLevel.UNIVERSITY}>
+                                        Üniversite
+                                    </option>
+                                </Select>
+                                <p className="text-sm text-[#f43f5e]">
+                                    {errors.education_level?.message}
+                                </p>
+                            </div>
 
-                        <div>
-                            <Select
-                                {...register('education_level')}
-                                id="education_level"
-                                label="Eğitim Seviyesi"
-                                className="block mt-1 w-full"
-                                placeholder="Choose"
-                                messages={errors.education_level?.message}>
-                                <option value={EducationLevel.PRIMARY}>
-                                    İlkokul
-                                </option>
-                                <option value={EducationLevel.MIDDLE}>
-                                    Ortaokul
-                                </option>
-                                <option value={EducationLevel.HIGH}>
-                                    Lise
-                                </option>
-                                <option value={EducationLevel.UNIVERSITY}>
-                                    Üniversite
-                                </option>
-                            </Select>
-                        </div>
+                            <div className="grid w-full items-center gap-1.5">
+                                <Label htmlFor="birth_date">Doğum tarihi</Label>
+                                <Input
+                                    {...register('birth_date')}
+                                    type="date"
+                                    id="birth_date"
+                                />
+                                <p className="text-sm text-[#f43f5e]">
+                                    {errors.birth_date?.message}
+                                </p>
+                            </div>
+                        </CardContent>
+                        <CardFooter className="flex items-center justify-between mt-4">
+                            <button
+                                onClick={() => handleDelete()}
+                                className="underline text-sm text-red-600 hover:text-red-400">
+                                Hesabımı sil
+                            </button>
 
-                        <div className="w-full">
-                            <Input
-                                {...register('birth_date')}
-                                type="date"
-                                id="birth_date"
-                                label="Doğum tarihi"
-                                className="block mt-1 w-full"
-                                messages={errors.birth_date?.message}
-                            />
-                        </div>
-                    </div>
-                    <div className="flex items-center justify-between mt-4">
-                        <button
-                            onClick={() => handleDelete()}
-                            className="underline text-sm text-red-600 hover:text-red-400">
-                            Hesabımı sil
-                        </button>
-
-                        <Button
-                            isLoading={isLoading}
-                            type={'submit'}
-                            disabled={!isDirty}
-                            label={'Kaydet'}
-                        />
-                    </div>
+                            <Button
+                                isLoading={isLoading}
+                                loader="Lütfen bekleyin"
+                                type="submit"
+                                disabled={!isDirty}>
+                                Kaydet
+                            </Button>
+                        </CardFooter>
+                    </Card>
                 </form>
 
-                <div className="mt-4">
+                <div>
                     <h3 className="text-zinc-700 dark:text-zinc-400 font-semibold text-xl mb-2.5">
                         Sorularınız mı var?
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                        <InfoCard className="max-w-sm p-6 bg-zinc-50 dark:bg-zinc-950">
-                            <p className="mb-5 text-base text-zinc-900 dark:text-zinc-400">
-                                Oturumu nasıl kapatabilirim?
-                            </p>
-                            <Link
-                                href="https://support.imtihantech.com/account-help#oturumu-kapatma"
-                                target="_blank"
-                                className="inline-flex items-center text-blue-500 hover:text-blue-400">
-                                Detaylı bilgi
-                                <ArrowTopRightOnSquareIcon className="w-4 h-4 ml-1.5" />
-                            </Link>
-                        </InfoCard>
+                        <Card className="max-w-sm">
+                            <CardHeader>
+                                <CardDescription>
+                                    Oturumu nasıl kapatabilirim?
+                                </CardDescription>
+                            </CardHeader>
+                            <CardFooter>
+                                <Link
+                                    href="https://support.imtihantech.com/account-help#oturumu-kapatma"
+                                    target="_blank"
+                                    className="inline-flex items-center text-blue-500 hover:text-blue-400">
+                                    Detaylı bilgi
+                                    <ArrowTopRightOnSquareIcon className="w-4 h-4 ml-1.5" />
+                                </Link>
+                            </CardFooter>
+                        </Card>
                     </div>
                 </div>
             </div>

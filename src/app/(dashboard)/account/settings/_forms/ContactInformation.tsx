@@ -8,7 +8,17 @@ import { AppDispatch, useDispatch, useSelector } from '@/store';
 import React, { useEffect, useState } from 'react';
 import { getUser, updateUser } from '@/store/slices/user';
 import { IContactInformationForm } from '@/types/IUser';
-import { Button, Input, Label } from '@codenteq/interfeys';
+import {
+    Button,
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+    Input,
+    Label,
+} from '@codenteq/interfeys';
 
 const UserUpdateSchema: yup.ObjectSchema<IContactInformationForm> = yup
     .object()
@@ -61,37 +71,39 @@ export default function ContactInformation() {
 
     return (
         <>
-            <div className="mt-16">
-                <div className="mb-6">
-                    <h3>İletişim tercihlerim</h3>
-                    <Label>
-                        Bilgilendirme Metni kapsamında önemli kampanyalardan
-                        haberdar olmak için tercih ettiğiniz yöntemleri
-                        belirtebilirsiniz. (Mobil bildirimler İleti Yönetim
-                        Sistemi kapsamında değildir.)
-                    </Label>
-                </div>
-
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <div className="grid gap-4 mb-6 lg:grid-cols-2">
-                        <div>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>İletişim tercihlerim</CardTitle>
+                        <CardDescription>
+                            Bilgilendirme Metni kapsamında önemli kampanyalardan
+                            haberdar olmak için tercih ettiğiniz yöntemleri
+                            belirtebilirsiniz. (Mobil bildirimler İleti Yönetim
+                            Sistemi kapsamında değildir.)
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="grid grid-cols-1 gap-4">
+                        <div className="grid w-full items-center gap-1.5">
+                            <Label htmlFor="phone">Cep telefon numarası</Label>
                             <Input
                                 {...register('phone')}
                                 type="tel"
                                 id="phone"
-                                label="Cep telefon numarası"
                                 minLength={9}
                                 maxLength={12}
-                                className="block my-1 w-full"
-                                helpText={
-                                    'Ülke kodu ile birlikte (901234567890)'
-                                }
-                                messages={errors.phone?.message}
                             />
+                            <Label className="!text-zinc-500">
+                                Ülke kodu ile birlikte (901234567890)
+                            </Label>
+                            <p className="text-sm text-[#f43f5e]">
+                                {errors.phone?.message}
+                            </p>
                         </div>
 
-                        <div>
-                            <Label className="flex justify-between">
+                        <div className="grid w-full items-center gap-1.5">
+                            <Label
+                                htmlFor="email"
+                                className="flex justify-between">
                                 E-posta adresi
                                 {!isEditingEmail && (
                                     <button
@@ -108,24 +120,27 @@ export default function ContactInformation() {
                                 disabled={!isEditingEmail}
                                 type="email"
                                 id="email"
-                                className="block my-1 w-full"
-                                helpText={
-                                    'Bu bilgileri değiştirebilmek için yeni e-posta adresini doğrulamanızı isteyeceğiz.'
-                                }
-                                messages={errors.email?.message}
                             />
+                            <Label className="!text-zinc-500">
+                                Bu bilgileri değiştirebilmek için yeni e-posta
+                                adresini doğrulamanızı isteyeceğiz.
+                            </Label>
+                            <p className="text-sm text-[#f43f5e]">
+                                {errors.email?.message}
+                            </p>
                         </div>
-                    </div>
-                    <div className="flex justify-end mt-4">
+                    </CardContent>
+                    <CardFooter className="flex justify-end mt-4">
                         <Button
                             isLoading={isLoading}
+                            loader="Lütfen bekleyin"
                             type="submit"
-                            disabled={!isDirty}
-                            label="Kaydet"
-                        />
-                    </div>
-                </form>
-            </div>
+                            disabled={!isDirty}>
+                            Kaydet
+                        </Button>
+                    </CardFooter>
+                </Card>
+            </form>
         </>
     );
 }

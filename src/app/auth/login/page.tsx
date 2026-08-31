@@ -51,10 +51,6 @@ export default function LoginPage() {
             .catch(() => setIsLoading(false));
     };
 
-    useEffect(() => {
-        console.log(errorMessages);
-    }, [errorMessages]);
-
     return (
         <GuestLayout>
             <AuthCard
@@ -70,63 +66,66 @@ export default function LoginPage() {
                         Devam etmek için lütfen İmtihan'a giriş yapın.
                     </p>
 
-                    <GoogleAuthButton label="Google ile devam et"/>
+                    <GoogleAuthButton label="Google ile devam et" />
                 </div>
 
                 <div className="inline-flex justify-center items-center w-full">
                     <hr className="my-8 h-px bg-zinc-200 border-0 dark:bg-zinc-700 w-full" />
-                    <span
-                        className="absolute left-1/2 px-3 font-medium text-zinc-900 -translate-x-1/2 bg-white dark:text-white dark:bg-black">
+                    <span className="absolute left-1/2 px-3 font-medium text-zinc-900 -translate-x-1/2 bg-white dark:text-white dark:bg-black">
                         veya
                     </span>
                 </div>
 
                 <form onSubmit={submitForm}>
-                    {/* Email Address */}
-                    <div>
-                        <Input
-                            id="email"
-                            type="email"
-                            value={email}
-                            className="block mt-1 w-full"
-                            placeholder="E-posta adresi veya kullanıcı adı"
-                            onChange={event => setEmail(event.target.value)}
-                            required
-                            autoFocus
-                            messages={errorMessages?.email}
-                        />
-                    </div>
+                    <div className="grid grid-cols-1 gap-4">
+                        {/* Email Address */}
+                        <div>
+                            <Input
+                                id="email"
+                                type="email"
+                                value={email}
+                                placeholder="E-posta adresi veya kullanıcı adı"
+                                onChange={event => setEmail(event.target.value)}
+                                required
+                                autoFocus
+                            />
+                            <p className="text-sm text-[#f43f5e]">
+                                {errorMessages?.email}
+                            </p>
+                        </div>
 
-                    {/* Password */}
-                    <div className="mt-4">
-                        <Input
-                            id="password"
-                            type={isRevealPassword ? 'text' : 'password'}
-                            value={password}
-                            className="block mt-1 w-full pr-10"
-                            placeholder="Şifre"
-                            onChange={event => setPassword(event.target.value)}
-                            required
-                            autoComplete="current-password"
-                            minLength={8}
-                            messages={errorMessages?.password}
-                        />
+                        {/* Password */}
+                        <div>
+                            <Input
+                                id="password"
+                                type={isRevealPassword ? 'text' : 'password'}
+                                value={password}
+                                className="pr-10"
+                                placeholder="Şifre"
+                                onChange={event => setPassword(event.target.value)}
+                                required
+                                autoComplete="current-password"
+                                minLength={8}
+                            />
+                            <p className="text-sm text-[#f43f5e]">
+                                {errorMessages?.password}
+                            </p>
 
-                        {/* Session Status */}
-                        <AuthSessionStatus className="mt-4" status={status} />
-                    </div>
+                            {/* Session Status */}
+                            <AuthSessionStatus className="mt-4" status={status} />
+                        </div>
 
-                    {/* Remember Me */}
-                    <div className="block mt-4">
-                        <Switch
-                            type={'checkbox'}
-                            id="remember_me"
-                            name="remember"
-                            label="Beni hatırla"
-                            onChange={event =>
-                                setShouldRemember(event.target.checked)
-                            }
-                        />
+                        {/* Remember Me */}
+                        <div className="flex items-center space-x-2">
+                            <Switch
+                                id="remember_me"
+                                name="remember"
+                                onChange={event =>
+                                    setShouldRemember(event.target.checked)
+                                }
+                            />
+                            <Label htmlFor="remember_me">Beni hatırla</Label>
+                        </div>
                     </div>
 
                     {/* Button */}
@@ -137,11 +136,9 @@ export default function LoginPage() {
                             </span>
                         </Link>
 
-                        <Button
-                            isLoading={isLoading}
-                            type={'submit'}
-                            label={'Giriş yap'}
-                        />
+                        <Button isLoading={isLoading} loader="Lütfen bekleyin" type="submit">
+                            Giriş yap
+                        </Button>
                     </div>
                 </form>
 
@@ -161,23 +158,25 @@ export default function LoginPage() {
                     </div>
                 </div>
 
-                <Label className="text-center text-xs my-4">
-                    Bu site CAPTCHA tarafından korunmaktadır ve CloudFlare{' '}
-                    <Link
-                        href="https://www.cloudflare.com/privacypolicy/"
-                        className="underline"
-                        target="_blank">
-                        Gizlilik Politikası
-                    </Link>{' '}
-                    ile{' '}
-                    <Link
-                        href="https://www.cloudflare.com/website-terms/"
-                        className="underline"
-                        target="_blank">
-                        Hizmet Koşulları
-                    </Link>{' '}
-                    geçerlidir.
-                </Label>
+                <div className="text-center my-4">
+                    <Label className="text-xs">
+                        Bu site CAPTCHA tarafından korunmaktadır ve CloudFlare{' '}
+                        <Link
+                            href="https://www.cloudflare.com/privacypolicy/"
+                            className="underline"
+                            target="_blank">
+                            Gizlilik Politikası
+                        </Link>{' '}
+                        ile{' '}
+                        <Link
+                            href="https://www.cloudflare.com/website-terms/"
+                            className="underline"
+                            target="_blank">
+                            Hizmet Koşulları
+                        </Link>{' '}
+                        geçerlidir.
+                    </Label>
+                </div>
             </AuthCard>
         </GuestLayout>
     );

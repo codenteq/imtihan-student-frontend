@@ -64,57 +64,62 @@ const PasswordReset = () => {
                 <AuthSessionStatus className="mb-4" status={status} />
 
                 <form onSubmit={submitForm}>
-                    {/* Email Address */}
-                    <div>
-                        <Input
-                            id="email"
-                            type="email"
-                            value={email}
-                            className="block mt-1 w-full"
-                            placeholder="Eposta"
-                            onChange={event => setEmail(event.target.value)}
-                            required
-                            autoFocus
-                            messages={errorMessages?.email}
-                        />
-                    </div>
+                    <div className="grid grid-cols-1 gap-4">
+                        {/* Email Address */}
+                        <div>
+                            <Input
+                                id="email"
+                                type="email"
+                                value={email}
+                                placeholder="Eposta"
+                                onChange={event => setEmail(event.target.value)}
+                                required
+                                autoFocus
+                            />
+                            <p className="text-sm text-[#f43f5e]">
+                                {errorMessages?.email}
+                            </p>
+                        </div>
 
-                    {/* Password */}
-                    <div className="mt-4">
-                        <Input
-                            id="password"
-                            type="password"
-                            value={password}
-                            className="block mt-1 w-full"
-                            placeholder="Şifre"
-                            onChange={event => setPassword(event.target.value)}
-                            required
-                            messages={errorMessages?.password}
-                        />
-                    </div>
+                        {/* Password */}
+                        <div>
+                            <Input
+                                id="password"
+                                type="password"
+                                value={password}
+                                className="pr-10"
+                                placeholder="Şifre"
+                                onChange={event => setPassword(event.target.value)}
+                                required
+                            />
+                            <p className="text-sm text-[#f43f5e]">
+                                {errorMessages?.password}
+                            </p>
+                        </div>
 
-                    {/* Confirm Password */}
-                    <div className="mt-4">
-                        <Input
-                            id="passwordConfirmation"
-                            type="password"
-                            value={passwordConfirmation}
-                            className="block mt-1 w-full"
-                            placeholder="Şifreyi Onayla"
-                            onChange={event =>
-                                setPasswordConfirmation(event.target.value)
-                            }
-                            required
-                            messages={errorMessages?.password_confirmation}
-                        />
+                        {/* Confirm Password */}
+                        <div>
+                            <Input
+                                id="passwordConfirmation"
+                                type="password"
+                                value={passwordConfirmation}
+                                className="pr-10"
+                                placeholder="Şifreyi Onayla"
+                                onChange={event =>
+                                    setPasswordConfirmation(event.target.value)
+                                }
+                                required
+                            />
+                            <p className="text-sm text-[#f43f5e]">
+                                {errorMessages?.password_confirmation}
+                            </p>
+                        </div>
                     </div>
 
                     <div className="flex items-center justify-end mt-4">
-                        <Button
-                            isLoading={isLoading}
-                            type={'submit'}
-                            label={'Şifreyi Sıfırla'}
-                        />
+                        <Button isLoading={isLoading} loader="Lütfen bekleyin" type="submit">
+                            Şifreyi Sıfırla
+                        </Button>
                     </div>
                 </form>
             </AuthCard>

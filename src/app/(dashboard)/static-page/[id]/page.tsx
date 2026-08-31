@@ -28,41 +28,35 @@ export default function StaticPageViewPage() {
             <main>
                 {isLoading ? (
                     <div role="status" className="max-w-sm animate-pulse">
-                        <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4" />
-                        <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5" />
+                        <div className="h-2.5 bg-zinc-200 rounded-full dark:bg-zinc-700 w-48 mb-4" />
+                        <div className="h-2 bg-zinc-200 rounded-full dark:bg-zinc-700 max-w-[360px] mb-2.5" />
                     </div>
                 ) : (
-                    <div className="max-w-4xl">
-                        <div>
-                            <div className="mb-2.5">
-                                <div>
-                                    <Badge className="bg-indigo-100 text-indigo-800 text-xs">
-                                        {new Date(
-                                            staticPage?.created_at,
-                                        ).toLocaleString('tr-TR', {
-                                            year: 'numeric',
-                                            month: 'long',
-                                            day: 'numeric',
-                                        })}
-                                    </Badge>
-                                </div>
-                            </div>
+                    <div className="max-w-4xl space-y-4">
+                        <Badge>
+                            {new Date(staticPage?.created_at).toLocaleString(
+                                'tr-TR',
+                                {
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric',
+                                },
+                            )}
+                        </Badge>
 
-                            <div className="md:flex items-center justify-between">
-                                <h1 className="mb-4 text-3xl font-extrabold md:text-3xl lg:text-4xl text-zinc-900 dark:text-zinc-200">
-                                    {staticPage?.name}
-                                </h1>
-                            </div>
-                            <p
-                                className="font-light text-zinc-500 dark:text-zinc-400"
-                                dangerouslySetInnerHTML={{
-                                    __html:
-                                        typeof staticPage?.content === 'string'
-                                            ? staticPage.content
-                                            : '',
-                                }}
-                            />
-                        </div>
+                        <h1 className="text-3xl font-extrabold md:text-3xl lg:text-4xl text-zinc-900 dark:text-zinc-200">
+                            {staticPage?.name}
+                        </h1>
+
+                        <p
+                            className="font-light text-zinc-600 dark:text-zinc-400"
+                            dangerouslySetInnerHTML={{
+                                __html:
+                                    typeof staticPage?.content === 'string'
+                                        ? staticPage.content
+                                        : '',
+                            }}
+                        />
                     </div>
                 )}
             </main>

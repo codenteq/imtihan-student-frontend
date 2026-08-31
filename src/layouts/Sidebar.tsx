@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import menuConfig, { IMenuItem } from '@/config/menu';
-import { Avatar } from '@codenteq/interfeys';
+import { Avatar, Label } from '@codenteq/interfeys';
 import { useAuthContext } from '@/auth/hooks/useAuthContext';
 import React from 'react';
 
@@ -25,19 +25,16 @@ export default function Sidebar({ className }: SidebarProps) {
     return (
         <aside
             className={`${className} text-zinc-900 dark:text-zinc-300 border-r border-zinc-100 dark:border-zinc-900 drop-shadow-sm bg-white dark:bg-black hidden lg:block w-72 z-10`}>
-            {user?.avatar ? (
-                <Avatar
-                    className={'text-center my-4'}
-                    src={user.avatar}
-                    name={user?.full_name}
-                />
-            ) : (
-                <Avatar
-                    className={'text-center my-4'}
-                    letter={userSplit}
-                    name={user?.full_name}
-                />
-            )}
+            <div className="flex flex-col items-center my-4">
+                {user?.avatar ? (
+                    <Avatar src={user?.avatar} />
+                ) : (
+                    <Avatar fallback={userSplit} />
+                )}
+                <Label>
+                    {user?.full_name}
+                </Label>
+            </div>
             <ul className="text-lg list-none">
                 {menus?.map((item: IMenuItem, index: number) => (
                     <Link href={item.path} key={index}>

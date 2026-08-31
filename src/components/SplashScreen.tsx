@@ -1,7 +1,10 @@
 import ApplicationLogo from '@/components/ApplicationLogo';
-import LottieAnimation from '@/components/LottieAnimation';
 import Lottie from '../../public/lottie/imtihan.json';
 import React from 'react';
+import dynamic from 'next/dynamic';
+const LottieAnimation = dynamic(() => import('@/components/LottieAnimation'), {
+    ssr: false,
+});
 
 export default function SplashScreen() {
     return (

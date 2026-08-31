@@ -144,7 +144,7 @@ export function updateClassSchedule(id: number, data: IClassScheduleForm) {
 
 export function deleteClassSchedule(id: number) {
     return async (dispatch: AppDispatch) => {
-        dispatch(slice.actions.startLoading);
+        dispatch(slice.actions.startLoading());
         try {
             const res = await axios.delete(
                 '/api/student/class-schedules/' + id,

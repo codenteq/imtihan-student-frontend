@@ -11,7 +11,7 @@ interface IUserState {
 
 const initialState: IUserState = {
     isLoading: false,
-    users: [] || null,
+    users: [],
     user: null,
 };
 

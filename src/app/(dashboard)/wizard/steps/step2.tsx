@@ -1,7 +1,7 @@
 'use client';
 
 import React, { ReactNode } from 'react';
-import { Button, Input, Select } from '@codenteq/interfeys';
+import { Button, Input, Label, Select } from '@codenteq/interfeys';
 
 interface Step2Props {
     onNext: () => void;
@@ -15,52 +15,42 @@ export default function Step2({ onNext, onPrev }: Step2Props): ReactNode {
                 Fatura adresi
             </h3>
 
-            <div className="grid gap-4 mb-6 lg:grid-cols-2">
-                <div>
-                    <Input
-                        name="address"
-                        type="text"
-                        className="w-full"
-                        label="Adres"
-                    />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div className="grid w-full items-center gap-1.5">
+                    <Label htmlFor="address">Adres</Label>
+                    <Input name="address" type="text" />
                 </div>
 
-                <div>
-                    <Select
-                        name="country_id"
-                        label="Ülke"
-                        className="w-full"
-                        placeholder="Choose">
+                <div className="grid w-full items-center gap-1.5">
+                    <Label htmlFor="country_id">Ülke</Label>
+                    <Select name="country_id">
+                        <option value="">Ülke seç</option>
                         <option value="0">Türkiye</option>
                     </Select>
                 </div>
 
-                <div>
-                    <Select
-                        name="city_id"
-                        label="Şehir"
-                        className="w-full"
-                        placeholder="Choose">
+                <div className="grid w-full items-center gap-1.5">
+                    <Label htmlFor="city_id">Şehir</Label>
+                    <Select name="city_id">
+                        <option value="">Şehir seç</option>
                         <option value="0">Adana</option>
                     </Select>
                 </div>
 
-                <div>
-                    <Select
-                        name="state_id"
-                        label="İlçe"
-                        className="w-full"
-                        placeholder="Choose">
+                <div className="grid w-full items-center gap-1.5">
+                    <Label htmlFor="state_id">İlçe</Label>
+                    <Select name="state_id">
+                        <option value="">İlçe seç</option>
                         <option value="0">Seyhan</option>
                     </Select>
                 </div>
             </div>
 
-            <div className="flex items-center justify-between">
-                <button type="button" onClick={onPrev} className="mr-2">
+            <div className="flex items-center justify-between mt-4">
+                <Button onClick={onPrev} variant="destructive">
                     Önceki
-                </button>
-                <Button type="submit" label="Sonraki" />
+                </Button>
+                <Button type="submit">Sonraki</Button>
             </div>
         </form>
     );

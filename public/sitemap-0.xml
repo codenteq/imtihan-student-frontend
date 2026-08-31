@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
-<url><loc>https://open.imtihantech.com/auth/login</loc><lastmod>2024-08-02T13:41:55.667Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://open.imtihantech.com/auth/forgot-password</loc><lastmod>2024-08-02T13:41:55.668Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://open.imtihantech.com/auth/register</loc><lastmod>2024-08-02T13:41:55.668Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://open.imtihantech.com</loc><lastmod>2024-08-02T13:41:55.668Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://open.imtihantech.com</loc><lastmod>2024-12-19T18:54:11.121Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://open.imtihantech.com/auth/forgot-password</loc><lastmod>2024-12-19T18:54:11.121Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://open.imtihantech.com/auth/login</loc><lastmod>2024-12-19T18:54:11.121Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://open.imtihantech.com/auth/register</loc><lastmod>2024-12-19T18:54:11.121Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
 </urlset>

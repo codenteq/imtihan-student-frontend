@@ -8,7 +8,9 @@ import {
     EnvelopeOpenIcon,
     DevicePhoneMobileIcon,
     PencilSquareIcon,
-    XCircleIcon, FireIcon, TrophyIcon,
+    XCircleIcon,
+    FireIcon,
+    TrophyIcon,
 } from '@heroicons/react/24/outline';
 import Footer from '@/layouts/Footer';
 import ThemeToggle from '@/components/ThemeToggle';
@@ -47,15 +49,22 @@ export default function AccountPage(): ReactNode {
                 <div className="grid grid-cols-1 gap-1">
                     <div className="border-b border-zinc-100 dark:border-zinc-900 p-5">
                         <div className="float-right cursor-pointer w-10 h-10 p-2">
-                            <Link href="/account/settings" id="account-edit-btn">
+                            <Link
+                                href="/account/settings"
+                                id="account-edit-btn">
                                 <PencilSquareIcon className="text-brand w-6 h-6" />
                             </Link>
                         </div>
-                        {user?.avatar ? (
-                            <Avatar className="!flex items-center gap-2" src={user.avatar} name={user?.full_name} />
-                        ) : (
-                            <Avatar className="!flex items-center gap-2" letter={userSplit} name={user?.full_name} />
-                        )}
+                        <div className="flex items-center gap-2">
+                            {user?.avatar ? (
+                                <Avatar src={user?.avatar} />
+                            ) : (
+                                <Avatar fallback={userSplit} />
+                            )}
+                            <Label className="!text-base">
+                                {user?.full_name}
+                            </Label>
+                        </div>
                     </div>
 
                     <div className="border-b border-zinc-100 dark:border-zinc-900 p-5">
@@ -65,11 +74,15 @@ export default function AccountPage(): ReactNode {
                         </span>
 
                         {user?.email_verified_at ? (
-                            <span className="text-green-600 dark:text-green-500 float-right" title="E-posta adresi doğrulanmış.">
+                            <span
+                                className="text-green-600 dark:text-green-500 float-right"
+                                title="E-posta adresi doğrulanmış.">
                                 <CheckCircleIcon className="w-6 h-6" />
                             </span>
                         ) : (
-                            <span className="text-red-600 dark:text-red-500 float-right" title="E-posta adresi doğrulanmamış.">
+                            <span
+                                className="text-red-600 dark:text-red-500 float-right"
+                                title="E-posta adresi doğrulanmamış.">
                                 <XCircleIcon className="w-6 h-6" />
                             </span>
                         )}
@@ -88,19 +101,17 @@ export default function AccountPage(): ReactNode {
                 </div>
 
                 <div className="flex justify-between gap-4 my-5">
-                    <div
-                        className="w-full md:w-[calc(50%-1rem)] flex gap-2 p-4 border border-neutral-200 rounded-2xl">
+                    <div className="w-full md:w-[calc(50%-1rem)] flex gap-2 p-4 border border-neutral-200 rounded-2xl">
                         <FireIcon className="w-6 h-6 text-orange-500" />
-                        <div>
+                        <div className="flex flex-col">
                             <span className="text-xl font-bold">32</span>
                             <Label>Günlük seri</Label>
                         </div>
                     </div>
 
-                    <div
-                        className="w-full md:w-[calc(50%-1rem)] flex gap-2 p-4 border border-neutral-200 rounded-2xl">
+                    <div className="w-full md:w-[calc(50%-1rem)] flex gap-2 p-4 border border-neutral-200 rounded-2xl">
                         <TrophyIcon className="w-6 h-6 text-yellow-500" />
-                        <div>
+                        <div className="flex flex-col">
                             <span className="text-xl font-bold">86</span>
                             <Label>Başarılar</Label>
                         </div>
@@ -111,11 +122,10 @@ export default function AccountPage(): ReactNode {
                     <InviteFriends />
                 </div>
 
-                <div className="grid grid-cols-1 gap-1">
+                <div className="grid grid-cols-1">
                     {config.account.map((item, index) => (
                         <Link href={item.path} key={index}>
-                            <div
-                                className="block lg:hidden border-b border-zinc-100 dark:border-zinc-900 hover:bg-zinc-100 focus:bg-zinc-100 dark:hover:bg-zinc-900 dark:focus:bg-zinc-900 w-full h-full p-5">
+                            <div className="block lg:hidden border-b border-zinc-100 dark:border-zinc-900 hover:bg-zinc-100 focus:bg-zinc-100 dark:hover:bg-zinc-900 dark:focus:bg-zinc-900 w-full h-full p-5">
                                 {item.icon}
                                 <span className="text-zinc-500 dark:text-zinc-300">
                                     {item.name}
@@ -154,6 +164,5 @@ export default function AccountPage(): ReactNode {
 
             <ViewModal open={openViewModal} setIsOpen={setOpenViewModal} />
         </>
-    )
-        ;
+    );
 }

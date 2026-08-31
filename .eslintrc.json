@@ -13,7 +13,7 @@
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
-    "plugin:@next/next/recommended",
+    /*"plugin:@next/next/recommended",*/
     "next/core-web-vitals",
     "prettier"
   ],
@@ -25,8 +25,8 @@
     "sourceType": "module"
   },
   "plugins": [
-    "react",
-    "@next/eslint-plugin-next"
+    "react"
+    /*"@next/eslint-plugin-next"*/
   ],
   "rules": {
     "arrow-body-style": 1,

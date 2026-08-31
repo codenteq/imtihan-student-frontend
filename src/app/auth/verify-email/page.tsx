@@ -45,10 +45,10 @@ const VerifyEmail = () => {
 
                 <div className="mt-4 flex items-center justify-between">
                     <Button
-                        type={'submit'}
-                        label={'Doğrulamayı Yeniden Gönder'}
-                        onClick={handleResendEmailVerification}
-                    />
+                        type="submit"
+                        onClick={handleResendEmailVerification}>
+                        Doğrulamayı Yeniden Gönder
+                    </Button>
 
                     <button
                         type="button"

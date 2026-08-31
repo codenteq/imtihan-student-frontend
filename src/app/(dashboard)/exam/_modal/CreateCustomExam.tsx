@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Modal, Select } from '@codenteq/interfeys';
+import { Button, Label, Modal, Select } from '@codenteq/interfeys';
 import { useEffect, useState } from 'react';
 import { createExam } from '@/store/slices/exam';
 import toast from 'react-hot-toast';
@@ -15,7 +15,6 @@ import {
 
 interface ICreateCustomExamModalProps {
     open: boolean;
-
     // eslint-disable-next-line no-unused-vars
     setIsOpen(value: boolean): void;
 }
@@ -66,14 +65,14 @@ export default function CreateCustomExamModal({
                     setIsOpen={setIsOpen}>
                     <form>
                         <div className="mb-5">
+                            <Label htmlFor="category_id">Kategori</Label>
                             <Select
-                                label="Kategori"
                                 className="block mt-1 w-full"
                                 onChange={e =>
                                     setCategoryId(Number(e.target.value))
                                 }
-                                name="category_id"
-                                placeholder="Choose">
+                                name="category_id">
+                                <option value="">Kategori seç</option>
                                 {questionCategories.map(
                                     (category: IQuestionCategoryTree) =>
                                         category.parents.map(
@@ -103,11 +102,12 @@ export default function CreateCustomExamModal({
                         </div>
                         <div className="flex justify-end w-full">
                             <Button
-                                isLoading={isLoading}
-                                onClick={handleExamCreate}
                                 type="button"
-                                label="Sınavı Başlat"
-                            />
+                                isLoading={isLoading}
+                                loader="Lütfen bekleyin"
+                                onClick={handleExamCreate}>
+                                Sınavı Başlat
+                            </Button>
                         </div>
                     </form>
                 </Modal>

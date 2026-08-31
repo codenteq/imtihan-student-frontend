@@ -203,19 +203,13 @@ export default function TestPage(): ReactNode {
 
                 <div>
                     {exam && exam?.questions?.length - 1 !== nextQuestion ? (
-                        <Button
-                            onClick={handleNextQuestion}
-                            className="px-10"
-                            type={'button'}
-                            label={'Sonraki'}
-                        />
+                        <Button onClick={handleNextQuestion} className="px-10">
+                            Sonraki
+                        </Button>
                     ) : (
-                        <Button
-                            onClick={handleFinishExam}
-                            className="px-10"
-                            type={'button'}
-                            label={'Sınavı Bitir'}
-                        />
+                        <Button onClick={handleFinishExam} className="px-10">
+                            Sınavı Bitir
+                        </Button>
                     )}
                 </div>
             </footer>

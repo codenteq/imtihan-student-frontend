@@ -13,6 +13,8 @@ import Progress from '@/components/progress/Progress';
 
 const inter = Inter({ subsets: ['latin'] });
 
+export const runtime = 'edge';
+
 export default function RootLayout({ children }: { children: ReactNode }) {
     return (
         <html lang="tr">

@@ -23,46 +23,42 @@ export default function NoteViewPage(): ReactNode {
             <main>
                 {isLoading ? (
                     <div role="status" className="max-w-sm animate-pulse">
-                        <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4" />
-                        <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5" />
+                        <div className="h-2.5 bg-zinc-200 rounded-full dark:bg-zinc-700 w-48 mb-4" />
+                        <div className="h-2 bg-zinc-200 rounded-full dark:bg-zinc-700 max-w-[360px] mb-2.5" />
                     </div>
                 ) : (
-                    <div className="max-w-4xl">
-                        <div>
-                            <div className="flex items-center mb-2.5">
-                                <Badge className="bg-indigo-100 text-indigo-800 text-xs">
-                                    {new Date(note?.created_at).toLocaleString(
-                                        'tr-TR',
-                                        {
-                                            year: 'numeric',
-                                            month: 'long',
-                                            day: 'numeric',
-                                            hour: 'numeric',
-                                            minute: 'numeric',
-                                        },
-                                    )}
-                                </Badge>
-                                <Badge className="bg-red-100 text-red-800 text-xs">
-                                    {note?.is_everyone == true
-                                        ? 'Herkes'
-                                        : 'Sadece Ben'}
-                                </Badge>
-                            </div>
+                    <div className="max-w-4xl p-6">
+                        <div className="flex flex-wrap items-center gap-2 mb-4">
+                            <Badge>
+                                {new Date(note?.created_at).toLocaleString(
+                                    'tr-TR',
+                                    {
+                                        year: 'numeric',
+                                        month: 'long',
+                                        day: 'numeric',
+                                        hour: 'numeric',
+                                        minute: 'numeric',
+                                    },
+                                )}
+                            </Badge>
+                            <Badge variant="outline">
+                                {note?.is_everyone ? 'Herkes' : 'Gizli'}
+                            </Badge>
+                        </div>
 
-                            <div>
-                                <h1 className="mb-4 text-zinc-900 dark:text-zinc-200">
-                                    {note?.name}
-                                </h1>
-                                <p
-                                    className="font-light text-zinc-500 dark:text-zinc-400"
-                                    dangerouslySetInnerHTML={{
-                                        __html:
-                                            typeof note?.content === 'string'
-                                                ? note.content
-                                                : '',
-                                    }}
-                                />
-                            </div>
+                        <div>
+                            <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-200 mb-4">
+                                {note?.name}
+                            </h1>
+                            <p
+                                className="text-base font-light text-zinc-600 dark:text-zinc-400 leading-relaxed"
+                                dangerouslySetInnerHTML={{
+                                    __html:
+                                        typeof note?.content === 'string'
+                                            ? note.content
+                                            : '',
+                                }}
+                            />
                         </div>
                     </div>
                 )}

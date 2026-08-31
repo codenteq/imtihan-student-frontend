@@ -119,7 +119,7 @@ export function updateNote(id: number, data: INoteForm) {
 
 export function deleteNote(id: number) {
     return async (dispatch: AppDispatch) => {
-        dispatch(slice.actions.startLoading);
+        dispatch(slice.actions.startLoading());
         try {
             const res = await axios.delete('/api/student/notes/' + id);
             dispatch(slice.actions.deleteNote(res.data));

@@ -40,13 +40,13 @@ export default function ViewModal({
                             <div
                                 role="status"
                                 className="max-w-sm animate-pulse">
-                                <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4" />
-                                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5" />
+                                <div className="h-2.5 bg-zinc-200 rounded-full dark:bg-zinc-700 w-48 mb-4" />
+                                <div className="h-2 bg-zinc-200 rounded-full dark:bg-zinc-700 max-w-[360px] mb-2.5" />
                             </div>
                         ) : (
                             <>
-                                <div className="flex ">
-                                    <Badge className="my-2 bg-indigo-100 text-indigo-800 text-xs">
+                                <div className="flex items-center gap-2">
+                                    <Badge>
                                         {new Date(
                                             classSchedule?.start_date,
                                         ).toLocaleString('tr-TR', {
@@ -57,7 +57,7 @@ export default function ViewModal({
                                             minute: 'numeric',
                                         })}
                                     </Badge>
-                                    <Badge className="my-2 bg-indigo-100 text-indigo-800 text-xs">
+                                    <Badge>
                                         {new Date(
                                             classSchedule?.end_date,
                                         ).toLocaleString('tr-TR', {

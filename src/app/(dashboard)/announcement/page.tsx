@@ -4,13 +4,24 @@ import { AppDispatch, useDispatch, useSelector } from '@/store';
 import React, { ReactNode, useEffect, useState } from 'react';
 import { getAnnouncements } from '@/store/slices/announcement';
 import ViewModal from '@/app/(dashboard)/announcement/_forms/ViewModal';
-import LottieAnimation from '@/components/LottieAnimation';
 import Lottie from '../../../../public/lottie/animation_llpkgi2z.json';
 import { IAnnouncementResponse } from '@/types/IAnnouncement';
 import { setTitle } from '@/store/slices/root';
-import { Badge, Card, InfoCard } from '@codenteq/interfeys';
+import {
+    Button,
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from '@codenteq/interfeys';
 import Image from 'next/image';
 import createImageUrl from '@/lib/image';
+import dynamic from 'next/dynamic';
+const LottieAnimation = dynamic(() => import('@/components/LottieAnimation'), {
+    ssr: false,
+});
 
 export default function AnnouncementPage(): ReactNode {
     const { announcements, isLoading } = useSelector(
@@ -52,51 +63,19 @@ export default function AnnouncementPage(): ReactNode {
                                 announcement: IAnnouncementResponse,
                                 key: number,
                             ) => (
-                                <Card
-                                    className="announcement-card"
-                                    key={key}
-                                    actions={[
-                                        <button
-                                            id="view"
-                                            key={key}
-                                            onClick={() =>
-                                                handleView(announcement?.id)
-                                            }>
-                                            Görüntüle
-                                        </button>,
-                                    ]}>
-                                    <div className="aspect-auto">
-                                        <div>
-                                            <Image
-                                                className="rounded-lg mt-2"
-                                                src={createImageUrl(
-                                                    announcement?.src,
-                                                )}
-                                                width={670}
-                                                height={236}
-                                                alt={announcement?.name}
-                                            />
-                                        </div>
-                                        <div className="my-2">
-                                            <Badge className="bg-indigo-100 text-indigo-800 text-xs">
-                                                {new Date(
-                                                    announcement?.created_at,
-                                                ).toLocaleString('tr-TR', {
-                                                    year: 'numeric',
-                                                    month: 'long',
-                                                    day: 'numeric',
-                                                    hour: 'numeric',
-                                                    minute: 'numeric',
-                                                })}
-                                            </Badge>
-                                        </div>
-                                        <div>
-                                            <h3>
-                                                {announcement?.name.slice(
-                                                    0,
-                                                    35,
-                                                )}
-                                            </h3>
+                                <Card className="announcement-card" key={key}>
+                                    <Image
+                                        className="rounded-t-lg object-cover"
+                                        src={createImageUrl(announcement?.src)}
+                                        width={640}
+                                        height={280}
+                                        alt={announcement?.name}
+                                    />
+                                    <CardHeader>
+                                        <CardTitle>
+                                            {announcement?.name.slice(0, 35)}
+                                        </CardTitle>
+                                        <CardDescription>
                                             <p
                                                 dangerouslySetInnerHTML={{
                                                     __html: announcement?.content
@@ -107,28 +86,38 @@ export default function AnnouncementPage(): ReactNode {
                                                         : '',
                                                 }}
                                             />
-                                        </div>
-                                    </div>
+                                        </CardDescription>
+                                    </CardHeader>
+                                    <CardFooter>
+                                        <Button
+                                            id="view"
+                                            className="w-full"
+                                            onClick={() =>
+                                                handleView(announcement?.id)
+                                            }>
+                                            Daha fazla
+                                        </Button>
+                                    </CardFooter>
                                 </Card>
                             ),
                         )
                     ) : (
-                        <InfoCard className="col-span-full">
-                            <div className="flex flex-col lg:flex-row items-center lg:max-w-4xl h-auto border border-brand rounded-2xl p-5 ">
-                                <div className="order-last lg:order-first">
-                                    <h3 className="text-2xl font-bold tracking-tight">
-                                        Henüz görülecek bir şey yok.
-                                    </h3>
-                                    <p className="text-lg">
-                                        Şu anda sistemde yayınlanmış bir duyuru
-                                        bulunmamaktadır.
-                                    </p>
-                                </div>
+                        <Card className="col-span-full flex flex-col lg:flex-row items-center justify-between lg:max-w-4xl">
+                            <CardHeader className="order-last lg:order-first">
+                                <CardTitle>
+                                    Henüz görülecek bir şey yok.
+                                </CardTitle>
+                                <CardDescription>
+                                    Şu anda sistemde yayınlanmış bir duyuru
+                                    bulunmamaktadır.
+                                </CardDescription>
+                            </CardHeader>
+                            <CardContent>
                                 <div className="h-72">
                                     <LottieAnimation animationData={Lottie} />
                                 </div>
-                            </div>
-                        </InfoCard>
+                            </CardContent>
+                        </Card>
                     )}
 
                     <ViewModal

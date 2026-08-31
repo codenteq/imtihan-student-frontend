@@ -1,7 +1,7 @@
 'use client';
 
 import React, { ReactNode } from 'react';
-import { Button, Input, Select } from '@codenteq/interfeys';
+import { Button, Input, Label, Select } from '@codenteq/interfeys';
 import EducationLevel from '@/enums/education-level';
 import Gender from '@/enums/gender';
 
@@ -16,31 +16,21 @@ export default function Step1({ onNext }: Step1Props): ReactNode {
                 Hesap detayları
             </h3>
 
-            <div className="grid gap-4 mb-6 lg:grid-cols-2">
-                <div>
-                    <Input
-                        className="w-full"
-                        type="tel"
-                        name="phone"
-                        label="Telefon"
-                    />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div className="grid w-full items-center gap-1.5">
+                    <Label htmlFor="phone">Telefon</Label>
+                    <Input type="tel" name="phone" />
                 </div>
 
-                <div>
-                    <Input
-                        className="w-full"
-                        type="date"
-                        name="birth_date"
-                        label="Doğum tarihi"
-                    />
+                <div className="grid w-full items-center gap-1.5">
+                    <Label htmlFor="birth_date">Doğum tarihi</Label>
+                    <Input type="date" name="birth_date" />
                 </div>
 
-                <div>
-                    <Select
-                        name="education_level"
-                        label="Eğitim Seviyesi"
-                        className="w-full"
-                        placeholder="Choose">
+                <div className="grid w-full items-center gap-1.5">
+                    <Label htmlFor="education_level">Eğitim Seviyesi</Label>
+                    <Select name="education_level">
+                        <option value="">Eğitim seviyesi seç</option>
                         <option value={EducationLevel.PRIMARY}>İlkokul</option>
                         <option value={EducationLevel.MIDDLE}>Ortaokul</option>
                         <option value={EducationLevel.HIGH}>Lise</option>
@@ -50,30 +40,27 @@ export default function Step1({ onNext }: Step1Props): ReactNode {
                     </Select>
                 </div>
 
-                <div>
-                    <Select
-                        name="gender"
-                        label="Cinsiyet"
-                        className="w-full"
-                        placeholder="Choose">
+                <div className="grid w-full items-center gap-1.5">
+                    <Label htmlFor="gender">Cinsiyet</Label>
+                    <Select name="gender">
+                        <option value="">Cinsiyet seç</option>
                         <option value={Gender.MALE}>Erkek</option>
                         <option value={Gender.FEMALE}>Kadın</option>
                     </Select>
                 </div>
 
-                <div>
-                    <Select
-                        name="language_id"
-                        label="Dil"
-                        className="w-full"
-                        placeholder="Choose">
+                <div className="grid w-full items-center gap-1.5">
+                    <Label htmlFor="language_id">Dil</Label>
+                    <Select name="language_id">
+                        <option value="">Dil seç</option>
                         <option value="1">Türkçe</option>
+                        <option value="2">İngilizce</option>
                     </Select>
                 </div>
             </div>
 
-            <div className="float-right">
-                <Button type="submit" label="Sonraki" />
+            <div className="flex justify-end mt-4">
+                <Button type="submit">Sonraki</Button>
             </div>
         </form>
     );

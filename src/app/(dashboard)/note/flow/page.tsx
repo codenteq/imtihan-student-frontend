@@ -11,7 +11,15 @@ import {
     EllipsisVerticalIcon,
     HeartIcon,
 } from '@heroicons/react/24/outline';
-import { Button, Label } from '@codenteq/interfeys';
+import {
+    Avatar,
+    Button,
+    Card,
+    CardContent,
+    CardFooter,
+    CardHeader,
+    Label,
+} from '@codenteq/interfeys';
 import Link from 'next/link';
 
 export default function FlowPage(): ReactNode {
@@ -30,58 +38,59 @@ export default function FlowPage(): ReactNode {
         <>
             <main className="flex gap-5">
                 <div className="flex flex-col gap-5 w-full">
-                    <div className="hover:bg-zinc-50 dark:hover:bg-zinc-950 p-4 border border-zinc-50 dark:border-zinc-800 shadow">
-                        <div className="flex justify-between items-center">
-                            <div className="flex space-x-2">
-                                <div className="inline-flex overflow-hidden relative justify-center items-center w-12 h-12 bg-zinc-200 rounded-full dark:bg-zinc-600">
-                                    <span className="font-medium text-zinc-600 dark:text-zinc-300">
-                                        ASA
-                                    </span>
+                    <Card>
+                        <CardHeader>
+                            <div className="flex justify-between items-center">
+                                <div className="flex items-center gap-2">
+                                    <Avatar fallback="ASA" />
+                                    <Label>Ahmet Sefa Arşiv • 2 sa</Label>
                                 </div>
-                                <div className="self-center">
-                                    <Label className="!text-base">
-                                        Ahmet Sefa Arşiv
-                                    </Label>
-                                    <Label>ahmetarsivpm@gmail.com • 2 sa</Label>
-                                </div>
-                            </div>
 
-                            <div>
-                                <div
-                                    className="cursor-pointer"
-                                    onClick={toggleMenu}>
-                                    <EllipsisVerticalIcon className="w-6 h-6 dark:text-white" />
-                                </div>
-                                {isOpen && (
-                                    <div className="relative">
-                                        <ul className="absolute right-0 truncate rounded-lg shadow-md backdrop-blur-lg bg-black/20 dark:bg-white/10">
-                                            <li className="mr-2 px-4 py-2 text-zinc-900 hover:text-zinc-700 dark:text-zinc-300 dark:hover:text-zinc-500 cursor-pointer">
-                                                @ahmetarsiv adlı kişiyi takip et
-                                            </li>
-                                            <li className="mr-2 px-4 py-2 text-zinc-900 hover:text-zinc-700 dark:text-zinc-300 dark:hover:text-zinc-500 cursor-pointer">
-                                                @ahmetarsiv'in gönderisini
-                                                bildir
-                                            </li>
-                                        </ul>
+                                <div>
+                                    <div
+                                        className="cursor-pointer"
+                                        onClick={toggleMenu}>
+                                        <EllipsisVerticalIcon className="w-6 h-6 dark:text-white" />
                                     </div>
-                                )}
+                                    {isOpen && (
+                                        <div className="relative">
+                                            <ul className="absolute right-0 truncate rounded-lg shadow-md backdrop-blur-lg bg-black/20 dark:bg-white/10">
+                                                <li className="mr-2 px-4 py-2 text-zinc-900 hover:text-zinc-700 dark:text-zinc-300 dark:hover:text-zinc-500 cursor-pointer">
+                                                    @ahmetarsiv adlı kişiyi
+                                                    takip et
+                                                </li>
+                                                <li className="mr-2 px-4 py-2 text-zinc-900 hover:text-zinc-700 dark:text-zinc-300 dark:hover:text-zinc-500 cursor-pointer">
+                                                    @ahmetarsiv'in gönderisini
+                                                    bildir
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
-                        </div>
-                        <div className="mt-4">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit. Proin a diam et justo ultricies aliquet.Lorem
-                            ipsum dolor sit amet, consectetur adipiscing elit.
-                            Proin a diam et justo ultricies aliquet. Lorem ipsum
-                            dolor sit amet, consectetur adipiscing elit.
-                        </div>
-                        <div className="flex justify-start gap-10 mt-4">
+                        </CardHeader>
+                        <CardContent>
+                            Lorem Ipsum is simply dummy text of the printing and
+                            typesetting industry. Lorem Ipsum has been the
+                            industry's standard dummy text ever since the 1500s,
+                            when an unknown printer took a galley of type and
+                            scrambled it to make a type specimen book. It has
+                            survived not only five centuries, but also the leap
+                            into electronic typesetting, remaining essentially
+                            unchanged. It was popularised in the 1960s with the
+                            release of Letraset sheets containing Lorem Ipsum
+                            passages, and more recently with desktop publishing
+                            software like Aldus PageMaker including versions of
+                            Lorem Ipsum.
+                        </CardContent>
+                        <CardFooter className="flex justify-start gap-10">
                             <ChatBubbleOvalLeftIcon className="w-5 h-6 cursor-pointer" />
                             <ArrowPathRoundedSquareIcon className="w-5 h-6 cursor-pointer" />
                             <HeartIcon className="w-5 h-6 cursor-pointer" />
                             <BookmarkIcon className="w-5 h-6 cursor-pointer" />
                             <ArrowUpTrayIcon className="w-5 h-6 cursor-pointer" />
-                        </div>
-                    </div>
+                        </CardFooter>
+                    </Card>
                 </div>
 
                 <aside className="bg-white dark:bg-black sm:hidden md:hidden lg:block xl:block 2xl:block hidden w-2/5 my-4">
@@ -92,11 +101,7 @@ export default function FlowPage(): ReactNode {
                             durumunda reklam geliri payı kazan.
                         </span>
                         <Link href={'/plan'}>
-                            <Button
-                                className="w-full"
-                                type={'button'}
-                                label={'Abone ol'}
-                            />
+                            <Button className="w-full">Abone ol</Button>
                         </Link>
                     </div>
                 </aside>

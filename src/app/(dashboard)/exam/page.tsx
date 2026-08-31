@@ -10,12 +10,25 @@ import { createExam } from '@/store/slices/exam';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Badge, Button, Card, InfoCard, Label } from '@codenteq/interfeys';
-import LottieAnimation from '@/components/LottieAnimation';
+import {
+    Badge,
+    Button,
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from '@codenteq/interfeys';
 import Lottie from '../../../../public/lottie/animation_llpjjjsc.json';
 import CreateCustomExamModal from '@/app/(dashboard)/exam/_modal/CreateCustomExam';
+import createImageUrl from '@/lib/image';
+import dynamic from 'next/dynamic';
+const LottieAnimation = dynamic(() => import('@/components/LottieAnimation'), {
+    ssr: false,
+});
 
-export default function ClassSchedulePage(): ReactNode {
+export default function ExamPage(): ReactNode {
     const dispatch: AppDispatch = useDispatch();
     const router = useRouter();
 
@@ -57,19 +70,13 @@ export default function ClassSchedulePage(): ReactNode {
                 <div className="flex items-center justify-end p-4">
                     <div className="w-full md:w-auto flex md:flex-row flex-col gap-2">
                         <Link href={'/exam/result'}>
-                            <Button
-                                className="w-full"
-                                type={'button'}
-                                label={'Sonuçlarım'}
-                            />
+                            <Button className="w-full">Sonuçlarım</Button>
                         </Link>
                         <Button
                             id="custom-exam-btn"
-                            className="w-full"
-                            type={'button'}
-                            onClick={() => setOpenCreateCustomExamModal(true)}
-                            label={'İmtihan ol'}
-                        />
+                            onClick={() => setOpenCreateCustomExamModal(true)}>
+                            İmtihan ol
+                        </Button>
                     </div>
                 </div>
 
@@ -89,57 +96,65 @@ export default function ClassSchedulePage(): ReactNode {
                     ) : examTypes.length > 0 ? (
                         examTypes?.map(
                             (examType: IExamTypeResponse, key: number) => (
-                                <div
-                                    className="cursor-pointer"
-                                    key={key}
-                                    onClick={() =>
-                                        handleExamCreate(examType.id)
-                                    }>
-                                    <Card className="exam">
-                                        <div>
-                                            <Image
-                                                className="rounded-lg mt-2"
-                                                src={
-                                                    'https://via.placeholder.com/1400x800?text=imtihan'
-                                                }
-                                                width={1400}
-                                                height={800}
-                                                alt={'Placeholder'}
+                                <Card className="announcement-card" key={key}>
+                                    <div className="relative">
+                                        <Image
+                                            className="rounded-t-lg object-cover"
+                                            src={createImageUrl(examType?.src)}
+                                            width={640}
+                                            height={280}
+                                            alt={examType?.name}
+                                        />
+                                        <div className="absolute inset-2">
+                                            <Badge>{examType.name}</Badge>
+                                        </div>
+                                    </div>
+                                    <CardHeader>
+                                        <CardTitle>
+                                            {examType?.name.slice(0, 35)}
+                                        </CardTitle>
+                                        <CardDescription>
+                                            <p
+                                                dangerouslySetInnerHTML={{
+                                                    __html: examType?.description
+                                                        ? examType.description.slice(
+                                                              0,
+                                                              50,
+                                                          )
+                                                        : '',
+                                                }}
                                             />
-                                        </div>
-                                        <div className="my-2">
-                                            <Badge className="bg-blue-100 text-blue-800 text-xs">
-                                                {examType.name}
-                                            </Badge>
-                                        </div>
-                                        <div>
-                                            <h3>Hazırlık Sınavı</h3>
-                                            <Label>
-                                                Temel Yeterlilik Sınavı ölçme ve
-                                                değerlendirme.
-                                            </Label>
-                                        </div>
-                                    </Card>
-                                </div>
+                                        </CardDescription>
+                                    </CardHeader>
+                                    <CardFooter>
+                                        <Button
+                                            className="exam w-full"
+                                            onClick={() =>
+                                                handleExamCreate(examType.id)
+                                            }>
+                                            İmtihan ol
+                                        </Button>
+                                    </CardFooter>
+                                </Card>
                             ),
                         )
                     ) : (
-                        <InfoCard className="col-span-full">
-                            <div className="flex flex-col lg:flex-row items-center lg:max-w-4xl h-auto border border-brand rounded-2xl p-5 ">
-                                <div className="order-last lg:order-first">
-                                    <h3 className="text-2xl font-bold tracking-tight">
-                                        Henüz görülecek bir şey yok.
-                                    </h3>
-                                    <p className="text-lg">
-                                        Şu anda sistemde yayınlanmış bir sınav
-                                        bulunmamaktadır.
-                                    </p>
-                                </div>
+                        <Card className="col-span-full flex flex-col lg:flex-row items-center lg:max-w-4xl">
+                            <CardHeader className="order-last lg:order-first">
+                                <CardTitle>
+                                    Henüz görülecek bir şey yok.
+                                </CardTitle>
+                                <CardDescription>
+                                    Şu anda sistemde yayınlanmış bir sınav
+                                    bulunmamaktadır.
+                                </CardDescription>
+                            </CardHeader>
+                            <CardContent>
                                 <div className="h-72">
                                     <LottieAnimation animationData={Lottie} />
                                 </div>
-                            </div>
-                        </InfoCard>
+                            </CardContent>
+                        </Card>
                     )}
                 </div>
             </main>

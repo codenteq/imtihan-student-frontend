@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Input, Modal, Textarea } from '@codenteq/interfeys';
+import { Button, Input, Label, Modal, Textarea } from '@codenteq/interfeys';
 import * as Yup from 'yup';
 import { IClassScheduleForm } from '@/types/IClassSchedule';
 import { useForm } from 'react-hook-form';
@@ -8,6 +8,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { AppDispatch, useDispatch, useSelector } from '@/store';
 import toast from 'react-hot-toast';
 import { postClassSchedule } from '@/store/slices/class-schedule';
+import React from 'react';
 
 const ClassScheduleCreateSchema: Yup.ObjectSchema<IClassScheduleForm> =
     Yup.object().shape({
@@ -28,6 +29,7 @@ export default function CreateModal({ open, setIsOpen }: ICreateModalProps) {
         handleSubmit,
         register,
         formState: { errors },
+        reset,
     } = useForm({ resolver: yupResolver(ClassScheduleCreateSchema) });
     const dispatch: AppDispatch = useDispatch();
     const { isLoading } = useSelector(state => state.classSchedule);
@@ -36,6 +38,7 @@ export default function CreateModal({ open, setIsOpen }: ICreateModalProps) {
         dispatch(postClassSchedule(data))
             .then(() => {
                 toast.success('Başarıyla oluşturuldu!');
+                reset();
                 setIsOpen(false);
             })
             .catch(err => {
@@ -47,55 +50,66 @@ export default function CreateModal({ open, setIsOpen }: ICreateModalProps) {
             {open && (
                 <Modal title="Oluştur" isOpen={open} setIsOpen={setIsOpen}>
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <div className="grid gap-4 mb-6">
-                            <div>
+                        <div className="grid grid-cols-1 gap-4">
+                            <div className="grid w-full items-center gap-1.5">
+                                <Label htmlFor="name">Adı</Label>
                                 <Input
                                     {...register('name')}
                                     type="text"
                                     id="name"
-                                    label="Adı"
-                                    className="block mt-1 w-full"
-                                    messages={errors.name?.message}
                                 />
+                                <p className="text-sm text-[#f43f5e]">
+                                    {errors.name?.message}
+                                </p>
                             </div>
-                            <div>
+
+                            <div className="grid w-full items-center gap-1.5">
+                                <Label htmlFor="description">Açıklama</Label>
                                 <Textarea
                                     {...register('description')}
                                     id="description"
-                                    label="Açıklama"
-                                    className="block mt-1 w-full"
-                                    messages={errors.description?.message}
                                 />
+                                <p className="text-sm text-[#f43f5e]">
+                                    {errors.description?.message}
+                                </p>
                             </div>
                         </div>
-                        <div className="grid gap-4 mb-6 lg:grid-cols-2">
-                            <div>
+
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                            <div className="grid w-full items-center gap-1.5">
+                                <Label htmlFor="start_date">
+                                    Başlangıç tarihi
+                                </Label>
                                 <Input
                                     {...register('start_date')}
                                     type="datetime-local"
                                     id="start_date"
-                                    label="Başlangıç tarihi"
-                                    className="block mt-1 w-full"
-                                    messages={errors.start_date?.message}
                                 />
+                                <p className="text-sm text-[#f43f5e]">
+                                    {errors.start_date?.message}
+                                </p>
                             </div>
-                            <div>
+
+                            <div className="grid w-full items-center gap-1.5">
+                                <Label htmlFor="end_date">Bitiş tarihi</Label>
                                 <Input
                                     {...register('end_date')}
                                     type="datetime-local"
                                     id="end_date"
-                                    label="Bitiş tarihi"
-                                    className="block mt-1 w-full"
-                                    messages={errors.end_date?.message}
                                 />
+                                <p className="text-sm text-[#f43f5e]">
+                                    {errors.end_date?.message}
+                                </p>
                             </div>
                         </div>
-                        <div className="flex justify-end w-full">
+
+                        <div className="flex justify-end mt-4">
                             <Button
                                 isLoading={isLoading}
-                                type={'submit'}
-                                label={'Kaydet'}
-                            />
+                                loader="Lütfen bekleyin"
+                                type="submit">
+                                Kaydet
+                            </Button>
                         </div>
                     </form>
                 </Modal>

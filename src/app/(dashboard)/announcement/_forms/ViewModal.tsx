@@ -37,49 +37,45 @@ export default function ViewModal({
                     title={announcement?.name}
                     isOpen={open}
                     setIsOpen={setIsOpen}>
-                    <div className="bg-white p-8 dark:bg-black">
-                        {isLoading ? (
-                            <div
-                                role="status"
-                                className="max-w-sm animate-pulse">
-                                <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4" />
-                                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5" />
-                            </div>
-                        ) : (
-                            <>
-                                <Image
-                                    src={createImageUrl(announcement?.src)}
-                                    width={670}
-                                    height={236}
-                                    alt={announcement?.name}
-                                    className="max-w-full h-auto rounded-lg duration-300 filter grayscale hover:grayscale-0"
-                                />
+                    {isLoading ? (
+                        <div role="status" className="max-w-sm animate-pulse">
+                            <div className="h-2.5 bg-zinc-200 rounded-full dark:bg-zinc-700 w-48 mb-4" />
+                            <div className="h-2 bg-zinc-200 rounded-full dark:bg-zinc-700 max-w-[360px] mb-2.5" />
+                        </div>
+                    ) : (
+                        <div className="space-y-4">
+                            <Image
+                                src={createImageUrl(announcement?.src)}
+                                width={670}
+                                height={236}
+                                alt={announcement?.name}
+                                className="max-w-full h-auto rounded-lg duration-300 filter grayscale hover:grayscale-0"
+                            />
 
-                                <Badge className="my-2 bg-indigo-100 text-indigo-800 text-xs">
-                                    {new Date(
-                                        announcement?.created_at,
-                                    ).toLocaleString('tr-TR', {
-                                        year: 'numeric',
-                                        month: 'long',
-                                        day: 'numeric',
-                                        hour: 'numeric',
-                                        minute: 'numeric',
-                                    })}
-                                </Badge>
+                            <Badge>
+                                {new Date(
+                                    announcement?.created_at,
+                                ).toLocaleString('tr-TR', {
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric',
+                                    hour: 'numeric',
+                                    minute: 'numeric',
+                                })}
+                            </Badge>
 
-                                <h1 className="mb-4 text-3xl font-extrabold md:text-3xl lg:text-4xl text-zinc-900 dark:text-zinc-200">
-                                    {announcement?.name}
-                                </h1>
+                            <h1 className="text-3xl font-extrabold md:text-3xl lg:text-4xl text-zinc-900 dark:text-zinc-200">
+                                {announcement?.name}
+                            </h1>
 
-                                <p
-                                    className="text-zinc-500 dark:text-zinc-400"
-                                    dangerouslySetInnerHTML={{
-                                        __html: announcement?.content,
-                                    }}
-                                />
-                            </>
-                        )}
-                    </div>
+                            <p
+                                className="text-zinc-500 dark:text-zinc-400"
+                                dangerouslySetInnerHTML={{
+                                    __html: announcement?.content,
+                                }}
+                            />
+                        </div>
+                    )}
                 </Modal>
             )}
         </>

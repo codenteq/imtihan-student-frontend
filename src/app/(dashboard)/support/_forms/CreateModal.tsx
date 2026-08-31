@@ -7,8 +7,8 @@ import { AppDispatch, useDispatch, useSelector } from '@/store';
 import { postSupport } from '@/store/slices/support';
 import toast from 'react-hot-toast';
 import { ISupportForm } from '@/types/ISupport';
-import { ReactNode } from 'react';
-import { Button, Input, Modal, Textarea } from '@codenteq/interfeys';
+import React, { ReactNode } from 'react';
+import { Button, Input, Label, Modal, Textarea } from '@codenteq/interfeys';
 
 const SupportCreateSchema: Yup.ObjectSchema<ISupportForm> = Yup.object().shape({
     subject: Yup.string().required('Required'),
@@ -30,6 +30,7 @@ export default function CreateModal({
         handleSubmit,
         register,
         formState: { errors },
+        reset,
     } = useForm({ resolver: yupResolver(SupportCreateSchema) });
     const dispatch: AppDispatch = useDispatch();
     const { isLoading } = useSelector(state => state.support);
@@ -38,6 +39,7 @@ export default function CreateModal({
         dispatch(postSupport(data))
             .then(() => {
                 toast.success('Başarıyla oluşturuldu!');
+                reset();
                 setIsOpen(false);
             })
             .catch(err => {
@@ -50,33 +52,38 @@ export default function CreateModal({
             {open && (
                 <Modal title="Oluştur" isOpen={open} setIsOpen={setIsOpen}>
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <div className="grid gap-4 mb-6">
-                            <div>
+                        <div className="grid grid-cols-1 gap-4">
+                            <div className="grid w-full items-center gap-1.5">
+                                <Label htmlFor="subject">Konu</Label>
                                 <Input
                                     {...register('subject')}
                                     type="text"
                                     id="subject"
-                                    label="Konu"
-                                    className="block mt-1 w-full"
-                                    messages={errors.subject?.message}
                                 />
+                                <p className="text-sm text-[#f43f5e]">
+                                    {errors.subject?.message}
+                                </p>
                             </div>
-                            <div>
+
+                            <div className="grid w-full items-center gap-1.5">
+                                <Label htmlFor="message">Mesaj</Label>
                                 <Textarea
                                     {...register('message')}
                                     id="message"
-                                    label="Mesaj"
-                                    className="block mt-1 w-full"
-                                    messages={errors.message?.message}
                                 />
+                                <p className="text-sm text-[#f43f5e]">
+                                    {errors.message?.message}
+                                </p>
                             </div>
                         </div>
-                        <div className="flex justify-end w-full">
+
+                        <div className="flex justify-end mt-4">
                             <Button
                                 isLoading={isLoading}
-                                type={'submit'}
-                                label={'Kaydet'}
-                            />
+                                loader="Lütfen bekleyin"
+                                type="submit">
+                                Kaydet
+                            </Button>
                         </div>
                     </form>
                 </Modal>

@@ -13,7 +13,7 @@ import GoogleAuthButton from '@/components/GoogleAuthButton';
 
 export default function LoginPage() {
     const params = useSearchParams();
-    const { push } = useRouter();
+    const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
 
     const { login, errorMessages } = useAuthContext();
@@ -45,8 +45,9 @@ export default function LoginPage() {
                 password,
                 remember: shouldRemember,
             });
-            window.location.href = '/';
-        } catch (error) {
+            router.push('/');
+            router.refresh();
+        } catch {
             setIsLoading(false);
         }
     };
@@ -87,6 +88,9 @@ export default function LoginPage() {
                                 value={email}
                                 placeholder="E-posta adresi veya kullanıcı adı"
                                 onChange={event => setEmail(event.target.value)}
+                                autoCapitalize="none"
+                                autoCorrect="off"
+                                spellCheck={false}
                                 required
                                 autoFocus
                             />
@@ -94,6 +98,7 @@ export default function LoginPage() {
                                 {errorMessages?.email}
                             </p>
                         </div>
+
 
                         {/* Password */}
                         <div>

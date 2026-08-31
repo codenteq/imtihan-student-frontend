@@ -1,5 +1,4 @@
 import { createContext } from 'react';
-import { IUserResponse } from '@/types/IUser';
 import {
     IAuthUserResponse,
     IForgotPasswordForm,
@@ -10,15 +9,17 @@ import {
 
 export type AuthStatus = 'authenticated' | 'loading' | 'unauthenticated';
 
+export type AuthValidationErrors = Record<string, string[] | string> | null;
+
 interface IAuthContext {
     user: IAuthUserResponse | null;
     status: AuthStatus;
-    errorMessages: any | null;
-    login: (data: ILoginForm) => Promise<any>;
-    register: (data: IRegisterForm) => Promise<any>;
-    resetPassword: (data: IResetPasswordForm) => Promise<any>;
-    forgotPassword: (data: IForgotPasswordForm) => Promise<any>;
-    resendEmailVerification: () => Promise<any>;
+    errorMessages: AuthValidationErrors;
+    login: (data: ILoginForm) => Promise<IAuthUserResponse>;
+    register: (data: IRegisterForm) => Promise<IAuthUserResponse>;
+    resetPassword: (data: IResetPasswordForm) => Promise<unknown>;
+    forgotPassword: (data: IForgotPasswordForm) => Promise<unknown>;
+    resendEmailVerification: () => Promise<unknown>;
     logout: () => void;
     destroySession: () => void;
 }
@@ -27,11 +28,12 @@ export const AuthContext = createContext<IAuthContext>({
     user: null,
     status: 'loading',
     errorMessages: null,
-    login: (data: ILoginForm) => new Promise(() => {}),
-    register: (data: IRegisterForm) => new Promise(() => {}),
-    resetPassword: (data: IResetPasswordForm) => new Promise(() => {}),
-    forgotPassword: (data: IForgotPasswordForm) => new Promise(() => {}),
+    login: () => new Promise(() => {}),
+    register: () => new Promise(() => {}),
+    resetPassword: () => new Promise(() => {}),
+    forgotPassword: () => new Promise(() => {}),
     resendEmailVerification: () => new Promise(() => {}),
     logout() {},
     destroySession() {},
 });
+

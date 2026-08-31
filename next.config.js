@@ -1,5 +1,10 @@
 require('dotenv').config();
 
+const BACKEND_URL =
+    process.env.BACKEND_URL ||
+    process.env.NEXT_PUBLIC_BACKEND_URL ||
+    'http://localhost:8000';
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     output: 'standalone',
@@ -24,38 +29,39 @@ const nextConfig = {
         return [
             {
                 source: '/sanctum/:path*',
-                destination: 'http://imtihan-backend.test/sanctum/:path*',
+                destination: `${BACKEND_URL}/sanctum/:path*`,
             },
             {
                 source: '/api/:path*',
-                destination: 'http://imtihan-backend.test/api/:path*',
+                destination: `${BACKEND_URL}/api/:path*`,
             },
             {
                 source: '/login',
-                destination: 'http://imtihan-backend.test/login',
+                destination: `${BACKEND_URL}/login`,
             },
             {
                 source: '/logout',
-                destination: 'http://imtihan-backend.test/logout',
+                destination: `${BACKEND_URL}/logout`,
             },
             {
                 source: '/register',
-                destination: 'http://imtihan-backend.test/register',
+                destination: `${BACKEND_URL}/register`,
             },
             {
                 source: '/forgot-password',
-                destination: 'http://imtihan-backend.test/forgot-password',
+                destination: `${BACKEND_URL}/forgot-password`,
             },
             {
                 source: '/reset-password',
-                destination: 'http://imtihan-backend.test/reset-password',
+                destination: `${BACKEND_URL}/reset-password`,
             },
             {
                 source: '/email/:path*',
-                destination: 'http://imtihan-backend.test/email/:path*',
+                destination: `${BACKEND_URL}/email/:path*`,
             },
         ];
     },
 };
 
 module.exports = nextConfig;
+

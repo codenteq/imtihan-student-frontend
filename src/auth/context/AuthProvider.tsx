@@ -33,11 +33,15 @@ export function AuthProvider({ children }: IAuthProviderProps) {
     async function login(data: ILoginForm) {
         await loginAPI(data)
             .then(data => {
+                setErrorMessages(null);
                 setUser(data);
                 setStatus('authenticated');
             })
             .catch(err => {
-                setErrorMessages(err.errors);
+                setErrorMessages(
+                    err?.response?.data?.errors ||
+                        err?.errors || { email: err?.response?.data?.message },
+                );
                 setUser(null);
                 throw err;
             });
@@ -46,13 +50,17 @@ export function AuthProvider({ children }: IAuthProviderProps) {
     async function register(data: IRegisterForm) {
         registerAPI(data)
             .then(data => {
+                setErrorMessages(null);
                 setUser(data);
                 setStatus('authenticated');
             })
             .catch(err => {
-                setErrorMessages(err.errors);
+                setErrorMessages(
+                    err?.response?.data?.errors ||
+                        err?.errors || { email: err?.response?.data?.message },
+                );
                 setUser(null);
-                return err.response.data;
+                return err.response?.data;
             });
     }
 
@@ -128,7 +136,8 @@ export function AuthProvider({ children }: IAuthProviderProps) {
                 resendEmailVerification,
                 logout,
                 destroySession,
-            }}>
+            }}
+        >
             {children}
         </AuthContext.Provider>
     );

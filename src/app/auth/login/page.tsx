@@ -39,16 +39,16 @@ export default function LoginPage() {
         event.preventDefault();
         setIsLoading(true);
 
-        login({
-            email,
-            password,
-            remember: shouldRemember,
-        })
-            .then(() => {
-                push('/');
-                setIsLoading(false);
-            })
-            .catch(() => setIsLoading(false));
+        try {
+            await login({
+                email,
+                password,
+                remember: shouldRemember,
+            });
+            window.location.href = '/';
+        } catch (error) {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -60,7 +60,8 @@ export default function LoginPage() {
                             <ApplicationLogo width={144} height={32} />
                         </div>
                     </Link>
-                }>
+                }
+            >
                 <div className="flex flex-col">
                     <p className="my-4 text-center text-sm">
                         Devam etmek için lütfen İmtihan'a giriş yapın.
@@ -82,7 +83,7 @@ export default function LoginPage() {
                         <div>
                             <Input
                                 id="email"
-                                type="email"
+                                type="text"
                                 value={email}
                                 placeholder="E-posta adresi veya kullanıcı adı"
                                 onChange={event => setEmail(event.target.value)}
@@ -102,7 +103,9 @@ export default function LoginPage() {
                                 value={password}
                                 className="pr-10"
                                 placeholder="Şifre"
-                                onChange={event => setPassword(event.target.value)}
+                                onChange={event =>
+                                    setPassword(event.target.value)
+                                }
                                 required
                                 autoComplete="current-password"
                                 minLength={8}
@@ -112,7 +115,10 @@ export default function LoginPage() {
                             </p>
 
                             {/* Session Status */}
-                            <AuthSessionStatus className="mt-4" status={status} />
+                            <AuthSessionStatus
+                                className="mt-4"
+                                status={status}
+                            />
                         </div>
 
                         {/* Remember Me */}
@@ -136,7 +142,11 @@ export default function LoginPage() {
                             </span>
                         </Link>
 
-                        <Button isLoading={isLoading} loader="Lütfen bekleyin" type="submit">
+                        <Button
+                            isLoading={isLoading}
+                            loader="Lütfen bekleyin"
+                            type="submit"
+                        >
                             Giriş yap
                         </Button>
                     </div>
@@ -164,14 +174,16 @@ export default function LoginPage() {
                         <Link
                             href="https://www.cloudflare.com/privacypolicy/"
                             className="underline"
-                            target="_blank">
+                            target="_blank"
+                        >
                             Gizlilik Politikası
                         </Link>{' '}
                         ile{' '}
                         <Link
                             href="https://www.cloudflare.com/website-terms/"
                             className="underline"
-                            target="_blank">
+                            target="_blank"
+                        >
                             Hizmet Koşulları
                         </Link>{' '}
                         geçerlidir.

@@ -5,14 +5,14 @@
 Imtihan, a practical platform that facilitates your educational journey, allows you to take notes, create online exams, share them with your friends, and access your courses. Additionally, it provides impressive online exams and new resources to explore, enhancing your learning experience, enabling self-discovery, participation in activities, and personal growth.
 ## Getting Started
 
-First, install the project:
+First, install the project and run the following command:
 
 ```bash
-cd frontend && yarn install && yarn dev
+yarn install && yarn dev
 ```
 
 ```bash
-cp .env.ACME .env
+cp .env.example .env
 ```
 
 Configuration
@@ -24,4 +24,5 @@ NEXT_PUBLIC_IMAGE_URL=http://localhost:9000
 
 ## Useful Links
 
-* [Imtihan Documentation](https://docs.imtihantech.com/)
+* [Imtihan Backend](https://github.com/codenteq/imtihan-backend)
+* [Imtihan](https://opensource.codenteq.com/imtihan/)

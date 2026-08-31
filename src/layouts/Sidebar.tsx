@@ -18,7 +18,7 @@ export default function Sidebar({ className }: SidebarProps) {
 
     const userSplit: string =
         user?.full_name
-            .split(' ')
+            ?.split(' ')
             .map((name: any) => name[0])
             .join('') || '';
 

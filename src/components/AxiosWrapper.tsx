@@ -30,7 +30,7 @@ export default function AxiosWrapper({ children }: IAxiosWrapper) {
             }
             return Promise.reject(
                 (error.response && error.response.data) ||
-                    'Something went wrong',
+                'Something went wrong',
             );
         },
     );

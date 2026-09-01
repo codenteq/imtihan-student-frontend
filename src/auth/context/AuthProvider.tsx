@@ -1,6 +1,6 @@
 'use client';
-import { useEffect, ReactNode, useState } from 'react';
-import { AuthContext, AuthStatus } from './AuthContext';
+import { useEffect, ReactNode, useState, useCallback } from 'react';
+import { AuthContext, AuthStatus, AuthValidationErrors } from './AuthContext';
 import {
     forgotPasswordAPI,
     getMeAPI,
@@ -17,74 +17,102 @@ import {
     IRegisterForm,
     IResetPasswordForm,
 } from '@/types/IAuth';
-import { useRouter } from 'next/navigation';
-import { da } from 'date-fns/locale';
+import { useRouter, usePathname } from 'next/navigation';
+import { isAxiosError } from 'axios';
 
 interface IAuthProviderProps {
     children: ReactNode;
 }
 
+interface IApiErrorResponse {
+    message?: string;
+    errors?: AuthValidationErrors;
+}
+
+function extractValidationErrors(err: unknown): AuthValidationErrors {
+    if (isAxiosError<IApiErrorResponse>(err)) {
+        const data = err.response?.data;
+        if (data?.errors) {
+            return data.errors;
+        }
+        if (data?.message) {
+            return { email: data.message };
+        }
+    }
+    return null;
+}
+
 export function AuthProvider({ children }: IAuthProviderProps) {
     const [user, setUser] = useState<IAuthUserResponse | null>(null);
     const [status, setStatus] = useState<AuthStatus>('loading');
-    const [errorMessages, setErrorMessages] = useState<string[] | null>(null); // Hata mesajı durum değişkenini tanımlayın
+    const [errorMessages, setErrorMessages] =
+        useState<AuthValidationErrors>(null);
     const { push } = useRouter();
+    const pathname = usePathname();
+
+    const destroySession = useCallback(() => {
+        setUser(null);
+        setStatus('unauthenticated');
+    }, []);
 
     async function login(data: ILoginForm) {
-        await loginAPI(data)
-            .then(data => {
-                setUser(data);
-                setStatus('authenticated');
-            })
-            .catch(err => {
-                setErrorMessages(err.errors);
-                setUser(null);
-                throw err;
-            });
+        try {
+            setErrorMessages(null);
+            const res = await loginAPI(data);
+            setUser(res);
+            setStatus('authenticated');
+            return res;
+        } catch (err: unknown) {
+            setErrorMessages(extractValidationErrors(err));
+            setUser(null);
+            throw err;
+        }
     }
 
     async function register(data: IRegisterForm) {
-        registerAPI(data)
-            .then(data => {
-                setUser(data);
-                setStatus('authenticated');
-            })
-            .catch(err => {
-                setErrorMessages(err.errors);
-                setUser(null);
-                return err.response.data;
-            });
+        try {
+            setErrorMessages(null);
+            const res = await registerAPI(data);
+            setUser(res);
+            setStatus('authenticated');
+            return res;
+        } catch (err: unknown) {
+            setErrorMessages(extractValidationErrors(err));
+            setUser(null);
+            throw err;
+        }
     }
 
     async function forgotPassword(data: IForgotPasswordForm) {
-        return forgotPasswordAPI(data).catch(err => {
-            setErrorMessages(err.errors);
-        });
+        try {
+            setErrorMessages(null);
+            return await forgotPasswordAPI(data);
+        } catch (err: unknown) {
+            setErrorMessages(extractValidationErrors(err));
+            throw err;
+        }
     }
 
     async function resetPassword(data: IResetPasswordForm) {
-        return resetPasswordAPI(data).catch(err => {
-            setErrorMessages(err.errors);
-        });
+        try {
+            setErrorMessages(null);
+            return await resetPasswordAPI(data);
+        } catch (err: unknown) {
+            setErrorMessages(extractValidationErrors(err));
+            throw err;
+        }
     }
 
     async function resendEmailVerification() {
         return await resendVerificationEmailAPI();
     }
 
-    async function destroySession() {
-        setUser(null);
-        setStatus('unauthenticated');
-    }
-
     async function logout() {
-        logoutAPI()
-            .then(() => {
-                destroySession();
-            })
-            .catch(() => {
-                destroySession();
-            });
+        try {
+            await logoutAPI();
+        } finally {
+            destroySession();
+        }
     }
 
     useEffect(() => {
@@ -93,27 +121,27 @@ export function AuthProvider({ children }: IAuthProviderProps) {
                 setStatus('authenticated');
                 setUser(data);
             })
-            .catch(async () => {
-                await destroySession();
+            .catch(() => {
+                destroySession();
             });
-    }, []);
+    }, [destroySession]);
 
     useEffect(() => {
-        if (status === 'unauthenticated') {
+        if (status === 'unauthenticated' && !pathname?.startsWith('/auth/')) {
             push('/auth/login');
         }
-    }, []);
+    }, [status, pathname, push]);
 
     useEffect(() => {
         if (
             status === 'authenticated' &&
-            window.location.pathname.startsWith('/auth/') &&
-            window.location.pathname !== '/auth/verify-email' &&
-            window.location.pathname !== '/auth/wait-list'
+            pathname?.startsWith('/auth/') &&
+            pathname !== '/auth/verify-email' &&
+            pathname !== '/auth/wait-list'
         ) {
             push('/');
         }
-    }, [status]);
+    }, [status, pathname, push]);
 
     return (
         <AuthContext.Provider
@@ -128,8 +156,10 @@ export function AuthProvider({ children }: IAuthProviderProps) {
                 resendEmailVerification,
                 logout,
                 destroySession,
-            }}>
+            }}
+        >
             {children}
         </AuthContext.Provider>
     );
 }
+

@@ -13,7 +13,7 @@ import GoogleAuthButton from '@/components/GoogleAuthButton';
 
 export default function LoginPage() {
     const params = useSearchParams();
-    const { push } = useRouter();
+    const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
 
     const { login, errorMessages } = useAuthContext();
@@ -28,27 +28,37 @@ export default function LoginPage() {
 
     useEffect(() => {
         const reset = params.get('reset');
-        if (reset && reset.length > 0 && errorMessages?.length === 0) {
-            setStatus(atob(reset as string));
+        const hasErrors =
+            errorMessages !== null && Object.keys(errorMessages).length > 0;
+
+        if (reset && !hasErrors) {
+            try {
+                setStatus(atob(reset));
+            } catch {
+                setStatus(null);
+            }
         } else {
             setStatus(null);
         }
-    }, []);
+    }, [params, errorMessages]);
 
     const submitForm = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setIsLoading(true);
 
-        login({
-            email,
-            password,
-            remember: shouldRemember,
-        })
-            .then(() => {
-                push('/');
-                setIsLoading(false);
-            })
-            .catch(() => setIsLoading(false));
+        try {
+            await login({
+                email,
+                password,
+                remember: shouldRemember,
+            });
+            router.push('/');
+            router.refresh();
+        } catch {
+            // Error is handled in AuthProvider and populated into errorMessages
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -60,7 +70,8 @@ export default function LoginPage() {
                             <ApplicationLogo width={144} height={32} />
                         </div>
                     </Link>
-                }>
+                }
+            >
                 <div className="flex flex-col">
                     <p className="my-4 text-center text-sm">
                         Devam etmek için lütfen İmtihan'a giriş yapın.
@@ -82,10 +93,13 @@ export default function LoginPage() {
                         <div>
                             <Input
                                 id="email"
-                                type="email"
+                                type="text"
                                 value={email}
                                 placeholder="E-posta adresi veya kullanıcı adı"
                                 onChange={event => setEmail(event.target.value)}
+                                autoCapitalize="none"
+                                autoCorrect="off"
+                                spellCheck={false}
                                 required
                                 autoFocus
                             />
@@ -93,6 +107,7 @@ export default function LoginPage() {
                                 {errorMessages?.email}
                             </p>
                         </div>
+
 
                         {/* Password */}
                         <div>
@@ -102,7 +117,9 @@ export default function LoginPage() {
                                 value={password}
                                 className="pr-10"
                                 placeholder="Şifre"
-                                onChange={event => setPassword(event.target.value)}
+                                onChange={event =>
+                                    setPassword(event.target.value)
+                                }
                                 required
                                 autoComplete="current-password"
                                 minLength={8}
@@ -112,7 +129,10 @@ export default function LoginPage() {
                             </p>
 
                             {/* Session Status */}
-                            <AuthSessionStatus className="mt-4" status={status} />
+                            <AuthSessionStatus
+                                className="mt-4"
+                                status={status}
+                            />
                         </div>
 
                         {/* Remember Me */}
@@ -136,7 +156,11 @@ export default function LoginPage() {
                             </span>
                         </Link>
 
-                        <Button isLoading={isLoading} loader="Lütfen bekleyin" type="submit">
+                        <Button
+                            isLoading={isLoading}
+                            loader="Lütfen bekleyin"
+                            type="submit"
+                        >
                             Giriş yap
                         </Button>
                     </div>
@@ -164,14 +188,16 @@ export default function LoginPage() {
                         <Link
                             href="https://www.cloudflare.com/privacypolicy/"
                             className="underline"
-                            target="_blank">
+                            target="_blank"
+                        >
                             Gizlilik Politikası
                         </Link>{' '}
                         ile{' '}
                         <Link
                             href="https://www.cloudflare.com/website-terms/"
                             className="underline"
-                            target="_blank">
+                            target="_blank"
+                        >
                             Hizmet Koşulları
                         </Link>{' '}
                         geçerlidir.

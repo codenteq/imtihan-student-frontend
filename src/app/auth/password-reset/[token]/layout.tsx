@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, Suspense } from 'react';
 import { Metadata } from 'next';
 import GuestLayout from '@/layouts/GuestLayout';
 
@@ -30,5 +30,9 @@ export const metadata: Metadata = {
 };
 
 export default function PasswordResetLayout(props: { children: ReactNode }) {
-    return <GuestLayout>{props.children}</GuestLayout>;
+    return (
+        <GuestLayout>
+            <Suspense>{props.children}</Suspense>
+        </GuestLayout>
+    );
 }

@@ -28,12 +28,19 @@ export default function LoginPage() {
 
     useEffect(() => {
         const reset = params.get('reset');
-        if (reset && reset.length > 0 && errorMessages?.length === 0) {
-            setStatus(atob(reset as string));
+        const hasErrors =
+            errorMessages !== null && Object.keys(errorMessages).length > 0;
+
+        if (reset && !hasErrors) {
+            try {
+                setStatus(atob(reset));
+            } catch {
+                setStatus(null);
+            }
         } else {
             setStatus(null);
         }
-    }, []);
+    }, [params, errorMessages]);
 
     const submitForm = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -48,6 +55,8 @@ export default function LoginPage() {
             router.push('/');
             router.refresh();
         } catch {
+            // Error is handled in AuthProvider and populated into errorMessages
+        } finally {
             setIsLoading(false);
         }
     };

@@ -11,7 +11,7 @@ import { useAuthContext } from '@/auth/hooks/useAuthContext';
 const VerifyEmail = () => {
     const { logout, resendEmailVerification } = useAuthContext();
 
-    const [status, setStatus] = useState(null);
+    const [status, setStatus] = useState<string | null>(null);
 
     const handleResendEmailVerification = () => {
         resendEmailVerification().then(res => {
